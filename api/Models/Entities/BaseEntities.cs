@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace DoAnTotNghiep.API.Models.Entities;
 /// <summary>
 /// Base entity chứa các thuộc tính chung cho tất cả các bảng.
@@ -5,18 +7,18 @@ namespace DoAnTotNghiep.API.Models.Entities;
 /// </summary>
 public abstract class BaseEntities
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public int Id { get; set; } //int auto_increment
     public Boolean IsActive { get; set; } = true;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? UpdatedAt { get; set; }
 }
 /// <summary>
 /// Mở rộng từ BaseEntities để bổ sung thông tin audit (theo dõi người tạo/cập nhật).
 /// </summary>
 public abstract class AuditableEntity : BaseEntities
 {
-    public Guid? CreatedBy { get; set; }
-    public Guid? UpdatedBy { get; set; }
+    public int? CreatedBy { get; set; }
+    public int? UpdatedBy { get; set; }
 }
 /// <summary>
 /// Định nghĩa contract cho các entity hỗ trợ soft delete.
@@ -29,5 +31,5 @@ public interface ISoftDeletable
 {
     bool IsDeleted { get; set; }
     DateTime? DeletedAt { get; set; }
-    Guid? DeletedBy { get; set; }
+    int? DeletedBy { get; set; }
 }

@@ -1,4 +1,5 @@
 using DoAnTotNghiep.API.Data;
+using DoAnTotNghiep.API.Data.Seeders;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 [assembly: ApiController]
@@ -8,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 var app = builder.Build();
-
+await DataSeeder.SeedAsync(app.Services);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

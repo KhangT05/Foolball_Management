@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace API.Common;
+namespace DoAnTotNghiep.API.Common;
 
 public class APIResponse<T>
 {
@@ -8,20 +8,29 @@ public class APIResponse<T>
     public T? Data { get; init; }
     public bool Success { get; init; }
     public string? Message { get; init; }
-    public object Error { get; init; }
-    public DateTime Timestamp { get; init; }
+    public object? Error { get; init; }
+    public DateTime Timestamp { get; init; } = DateTime.UtcNow;
     public int StatusCode { get; init; }
+    private static readonly HashSet<HttpStatusCode> SuccessCode =
+    [
+        HttpStatusCode.OK, // 200,
+        HttpStatusCode.Created, // 201,
+        HttpStatusCode.Accepted, // 202,
+        HttpStatusCode.NoContent, // 204,
+    ];
 
-    public static APIResponse<T> Ok(T data, string? message) => new()
-    {
-        StatusCode = (int)HttpStatusCode.OK,
-        Success = true,
-        Data = data,
-        Message = message,
-        Timestamp = DateTime.UtcNow,
-    };
+    public static APIResponse<T> Ok(
+        T? data = default,
+        string? message = null,
+        HttpStatusCode statusCode = HttpStatusCode.OK) => new()
+        {
+            StatusCode = (int)statusCode,
+            Success = true,
+            Data = data,
+            Message = message,
+        };
     public static APIResponse<T> Fail(
-        object error,
+        object? error,
         string? message,
         HttpStatusCode statusCode = HttpStatusCode.InternalServerError
      ) => new()
@@ -30,12 +39,13 @@ public class APIResponse<T>
          Success = false,
          Error = error,
          Message = message,
-         Timestamp = DateTime.UtcNow,
      };
-    public static APIResponse<T> Messages(string? message) => new()
-    {
-        Success = true,
-        Message = message,
-        Timestamp = DateTime.UtcNow,
-    };
+    public static APIResponse<T> Messages(
+        string? message,
+        HttpStatusCode statusCode = HttpStatusCode.OK) => new()
+        {
+            StatusCode = (int)statusCode,
+            Success = SuccessCode.Contains(statusCode),
+            Message = message,
+        };
 }
