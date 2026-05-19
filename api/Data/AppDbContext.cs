@@ -52,7 +52,7 @@ public class AppDbContext : DbContext
     // Team & Player Management
     public DbSet<Team> Teams { get; set; }
     public DbSet<Player> Players { get; set; }
-    // public DbSet<TeamPlayer> TeamPlayers { get; set; }
+    public DbSet<TeamPlayer> TeamPlayers { get; set; }
 
     // Match Management
     // public DbSet<Match> Matches { get; set; }

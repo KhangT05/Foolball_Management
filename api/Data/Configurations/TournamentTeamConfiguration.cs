@@ -4,7 +4,7 @@
 
 // namespace DoAnTotNghiep.API.Data.Configurations;
 
-// public class TournamentTeamConfiguration : IEntityTypeConfiguration<TournamentTeam>
+// public class TournamentTeamConfiguration : BaseEntityConfiguration<TournamentTeam>
 // {
 //     public void Configure(EntityTypeBuilder<TournamentTeam> builder)
 //     {

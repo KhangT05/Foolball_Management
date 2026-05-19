@@ -18,7 +18,7 @@ public class Team : AuditableEntity
     public string Description { get; set; }
 
     public ICollection<TeamPlayer> TeamPlayers { get; set; } = new List<TeamPlayer>();
-    public ICollection<SeasonTeam> SeasonTeams { get; set; } = new List<SeasonTeam>();
+    // public ICollection<SeasonTeam> SeasonTeams { get; set; } = new List<SeasonTeam>();
 
     public Team() { }
 

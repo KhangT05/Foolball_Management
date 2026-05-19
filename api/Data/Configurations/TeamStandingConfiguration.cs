@@ -4,7 +4,7 @@
 
 // namespace DoAnTotNghiep.API.Data.Configurations;
 
-// public class TeamStandingConfiguration : IEntityTypeConfiguration<TeamStanding>
+// public class TeamStandingConfiguration : BaseEntityConfiguration<TeamStanding>
 // {
 //     public void Configure(EntityTypeBuilder<TeamStanding> builder)
 //     {

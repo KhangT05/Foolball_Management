@@ -10,7 +10,7 @@ namespace DoAnTotNghiep.API.Models.Entities;
 /// - Role: Vai trò của cầu thủ trong đội bóng (ví dụ: Cầu thủ thường, Đội trưởng, Phó đội trưởng).
 /// - Status: Trạng thái hiện tại của cầu thủ trong đội bóng (ví dụ: Đang hoạt động, Chấn thương, Treo giò).
 /// </summary>
-public class TeamPlayer : AuditableEntity
+public class TeamPlayer
 {
     public int TeamId { get; set; }
     public int PlayerId { get; set; }
@@ -18,6 +18,14 @@ public class TeamPlayer : AuditableEntity
     public string Position { get; set; } // Goalkeeper, Defender, Midfielder, Forward
     public string Role { get; set; } // Player, Captain, Vice-Captain
     public string Status { get; set; }
+    public Boolean IsActive { get; set; } = true;
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+    public int? CreatedBy { get; set; }
+    public int? UpdatedBy { get; set; }
+    public DateTime? DeletedAt { get; set; }
+    public int? DeletedBy { get; set; }
+    public bool IsDeleted { get; set; } = false;
 
     public Team Team { get; set; }
     public Player Player { get; set; }

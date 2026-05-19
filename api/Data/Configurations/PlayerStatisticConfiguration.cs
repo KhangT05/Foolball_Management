@@ -4,7 +4,7 @@
 
 // namespace DoAnTotNghiep.API.Data.Configurations;
 
-// public class PlayerStatisticConfiguration : IEntityTypeConfiguration<PlayerStatistic>
+// public class PlayerStatisticConfiguration : BaseEntityConfiguration<PlayerStatistic>
 // {
 //     public void Configure(EntityTypeBuilder<PlayerStatistic> builder)
 //     {

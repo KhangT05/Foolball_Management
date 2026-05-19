@@ -60,24 +60,24 @@ where T : AuditableEntity
 
         builder.Property(e => e.DeletedAt).IsRequired(false);
         builder.Property(e => e.DeletedBy).IsRequired(false);
-        builder.Property(e => e.IsDeleted).IsRequired(false);
+        builder.Property(e => e.IsDeleted).HasDefaultValue(false);
 
         builder.HasOne<User>()
             .WithMany()
             .HasForeignKey(e => e.CreatedBy)
-            .OnDelete(DeleteBehavior.SetNull)
+            .OnDelete(DeleteBehavior.NoAction)
             .IsRequired(false);
 
         builder.HasOne<User>()
             .WithMany()
             .HasForeignKey(e => e.UpdatedBy)
-            .OnDelete(DeleteBehavior.SetNull)
+            .OnDelete(DeleteBehavior.NoAction)
             .IsRequired(false);
 
         builder.HasOne<User>()
             .WithMany()
             .HasForeignKey(e => e.DeletedBy)
-            .OnDelete(DeleteBehavior.SetNull)
+            .OnDelete(DeleteBehavior.NoAction)
             .IsRequired(false);
 
         builder.HasQueryFilter(e => !e.IsDeleted);
