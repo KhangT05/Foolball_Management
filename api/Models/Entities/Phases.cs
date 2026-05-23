@@ -1,7 +1,7 @@
-// using DoAnTotNghiep.API.Common.Enums;
-// using DoAnTotNghiep.API.Models.Entities.Base;
+// using Football_Management.API.Common.Enums;
+// using Football_Management.API.Models.Entities.Base;
 
-// namespace DoAnTotNghiep.API.Models.Entities;
+// namespace Football_Management.API.Models.Entities;
 
 // public class Phase : AuditableEntity
 // {

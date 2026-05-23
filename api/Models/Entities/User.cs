@@ -1,6 +1,6 @@
-using DoAnTotNghiep.API.Models.Entities.Base;
+using Football_Management.API.Models.Entities.Base;
 
-namespace DoAnTotNghiep.API.Models.Entities;
+namespace Football_Management.API.Models.Entities;
 /// <summary>
 /// Đại diện cho người dùng trên hệ thống
 /// Chứ các thông tin cơ bản
@@ -47,11 +47,11 @@ public class User : BaseEntity
     /// <param name="email"></param>
     /// <param name="phone"></param>
     /// còn constructor không tham số thì có thể không bắt buộc phải truyền
-    public ICollection<UserRole> UserRoles { get; set; }
-    public User(string name, string password, string email, string phone)
+    public int? RoleId { get; set; }
+    public Role Role { get; set; }
+    public User(string name, string email, string phone)
     {
         Name = name;
-        Password = password;
         Email = email;
         Phone = phone;
     }

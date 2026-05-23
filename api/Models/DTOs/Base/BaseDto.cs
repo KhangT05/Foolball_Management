@@ -1,4 +1,4 @@
-namespace DoAnTotNghiep.API.Models.DTOs.Base;
+namespace Football_Management.API.Models.DTOs.Base;
 
 public abstract class BaseDto
 {

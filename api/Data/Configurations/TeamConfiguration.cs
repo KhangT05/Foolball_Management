@@ -1,10 +1,10 @@
-using DoAnTotNghiep.API.Common;
-using DoAnTotNghiep.API.Data.Configuration;
-using DoAnTotNghiep.API.Models.Entities;
+using Football_Management.API.Common;
+using Football_Management.API.Data.Configuration;
+using Football_Management.API.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DoAnTotNghiep.API.Data.Configurations;
+namespace Football_Management.API.Data.Configurations;
 
 public class TeamConfiguration : AuditableEntityConfiguration<Team>
 {

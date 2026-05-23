@@ -1,9 +1,9 @@
-using DoAnTotNghiep.API.Data;
+using Football_Management.API.Data;
 using Microsoft.EntityFrameworkCore;
-using DoAnTotNghiep.API.Common.Exceptions;
-using DoAnTotNghiep.API.Repositories.Interfaces;
-using DoAnTotNghiep.API.Models.Entities.Base;
-namespace DoAnTotNghiep.API.Repositories.Implements;
+// using Football_Management.API.Common.Exceptions;
+using Football_Management.API.Repositories.Interfaces;
+using Football_Management.API.Models.Entities.Base;
+namespace Football_Management.API.Repositories.Implements;
 
 public class BaseRepository<TEntity> : IBaseRepository<TEntity>
     where TEntity : BaseEntity
@@ -20,8 +20,8 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity>
     public async Task<TEntity?> FindAsync(int Id)
         => await _dbSet.FindAsync(Id);
     public async Task<TEntity?> FindOrFailAsync(int Id)
-    => await _dbSet.FindAsync(Id)
-    ?? throw new NotFoundException($"{typeof(TEntity).Name} #{Id} không tồn tại.");
+    => await _dbSet.FindAsync(Id);
+    // ?? throw new NotFoundException($"{typeof(TEntity).Name} #{Id} không tồn tại.");
     public IQueryable<TEntity> Query() => _dbSet.AsQueryable();
     public async Task<List<TEntity>> GetAllAsync() => await _dbSet.ToListAsync();
     public async Task<TEntity> AddAsync(TEntity entity)

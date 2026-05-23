@@ -1,6 +1,6 @@
-using DoAnTotNghiep.API.Models.Entities.Base;
+using Football_Management.API.Models.Entities.Base;
 
-namespace DoAnTotNghiep.API.Models.Entities;
+namespace Football_Management.API.Models.Entities;
 /// <summary>
 /// Đại diện cho một đội bóng tham gia giải đấu.
 /// </summary>

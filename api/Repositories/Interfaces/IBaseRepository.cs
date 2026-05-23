@@ -1,6 +1,6 @@
-using DoAnTotNghiep.API.Models.Entities.Base;
+using Football_Management.API.Models.Entities.Base;
 
-namespace DoAnTotNghiep.API.Repositories.Interfaces;
+namespace Football_Management.API.Repositories.Interfaces;
 
 public interface IBaseRepository<TEntity>
 where TEntity : BaseEntity

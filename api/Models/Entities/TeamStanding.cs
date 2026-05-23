@@ -1,6 +1,6 @@
-// using DoAnTotNghiep.API.Models.Entities.Base;
+// using Football_Management.API.Models.Entities.Base;
 
-// namespace DoAnTotNghiep.API.Models.Entities;
+// namespace Football_Management.API.Models.Entities;
 // /// <summary>
 // /// Đại diện cho bảng xếp hạng của một đội bóng trong một giai đoạn cụ thể của giải đấu.
 // /// - Thuộc tính:

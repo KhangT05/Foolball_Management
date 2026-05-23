@@ -1,7 +1,7 @@
-// using DoAnTotNghiep.API.Common.Enums;
-// using DoAnTotNghiep.API.Models.Entities.Base;
+// using Football_Management.API.Common.Enums;
+// using Football_Management.API.Models.Entities.Base;
 
-// namespace DoAnTotNghiep.API.Models.Entities;
+// namespace Football_Management.API.Models.Entities;
 // /// <summary>
 // /// Đại diện cho mối quan hệ giữa giải đấu (Season) và đội tuyển (Team) trong hệ thống quản lý giải đấu thể thao điện tử.
 // /// - Thuộc tính:

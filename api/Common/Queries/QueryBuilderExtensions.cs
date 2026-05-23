@@ -1,4 +1,4 @@
-namespace DoAnTotNghiep.API.Common.Queries;
+namespace Football_Management.API.Common.Queries;
 
 public static class QueryBuilderExtensions
 {

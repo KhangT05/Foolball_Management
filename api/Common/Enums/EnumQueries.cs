@@ -1,5 +1,5 @@
 
-namespace DoAnTotNghiep.API.Common.Enums;
+namespace Football_Management.API.Common.Enums;
 
 public enum FilterOperator
 {

@@ -1,7 +1,7 @@
-using DoAnTotNghiep.API.Models.Entities;
+using Football_Management.API.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace DoAnTotNghiep.API.Data;
+namespace Football_Management.API.Data;
 
 public class AppDbContext : DbContext
 {
@@ -41,7 +41,6 @@ public class AppDbContext : DbContext
     // User Management
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
-    public DbSet<UserRole> UserRoles { get; set; }
 
     // Tournament Management
     // public DbSet<Tournament> Tournaments { get; set; }

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace DoAnTotNghiep.API.Data.Seeders;
+namespace Football_Management.API.Data.Seeders;
 
 public static class DataSeeder
 {
@@ -9,6 +9,7 @@ public static class DataSeeder
         using var scope = service.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         await db.Database.MigrateAsync();
-        await UserSeeder.SeedAsync(db);
+        // await UserSeeder.SeedAsync(db);
+        // await RoleSeeder.SeedAsync(db);
     }
 }

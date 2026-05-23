@@ -1,4 +1,4 @@
-namespace DoAnTotNghiep.API.Models.Entities.Base;
+namespace Football_Management.API.Models.Entities.Base;
 /// <summary>
 /// Mở rộng từ BaseEntities để bổ sung thông tin audit (theo dõi người tạo/cập nhật).
 /// </summary>

@@ -1,9 +1,9 @@
-using DoAnTotNghiep.API.Data;
-using DoAnTotNghiep.API.Models.Entities;
-using DoAnTotNghiep.API.Repositories.Interfaces;
+using Football_Management.API.Data;
+using Football_Management.API.Models.Entities;
+using Football_Management.API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace DoAnTotNghiep.API.Repositories.Implements;
+namespace Football_Management.API.Repositories.Implements;
 
 public class UserRepository : BaseRepository<User>, IUserRepository
 {

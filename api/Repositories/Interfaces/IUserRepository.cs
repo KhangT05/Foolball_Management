@@ -1,6 +1,6 @@
-using DoAnTotNghiep.API.Models.Entities;
+using Football_Management.API.Models.Entities;
 
-namespace DoAnTotNghiep.API.Repositories.Interfaces;
+namespace Football_Management.API.Repositories.Interfaces;
 
 public interface IUserRepository : IBaseRepository<User>
 {

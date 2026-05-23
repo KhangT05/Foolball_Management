@@ -1,7 +1,7 @@
-// using DoAnTotNghiep.API.Common.Enums;
-// using DoAnTotNghiep.API.Models.DTOs.Base;
+// using Football_Management.API.Common.Enums;
+// using Football_Management.API.Models.DTOs.Base;
 
-// namespace DoAnTotNghiep.API.Models.DTOs;
+// namespace Football_Management.API.Models.DTOs;
 
 // public class SeasonDto : BaseDto
 // {

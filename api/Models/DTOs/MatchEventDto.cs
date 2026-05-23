@@ -1,4 +1,4 @@
-// namespace DoAnTotNghiep.API.Models.DTOs;
+// namespace Football_Management.API.Models.DTOs;
 
 // public class MatchEventDto : AuditableDto
 // {

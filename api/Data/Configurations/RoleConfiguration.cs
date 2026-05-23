@@ -1,10 +1,10 @@
-using DoAnTotNghiep.API.Common;
-using DoAnTotNghiep.API.Data.Configuration;
-using DoAnTotNghiep.API.Models.Entities;
+using Football_Management.API.Common;
+using Football_Management.API.Data.Configuration;
+using Football_Management.API.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DoAnTotNghiep.API.Data.Configurations;
+namespace Football_Management.API.Data.Configurations;
 
 public class RoleConfiguration : BaseEntityConfiguration<Role>
 {
@@ -13,9 +13,6 @@ public class RoleConfiguration : BaseEntityConfiguration<Role>
         builder.ToTable("Roles");
 
         builder.Property(r => r.Name).IsRequired().HasMaxLength(MaxLength.Default);
-        builder.Property(r => r.Description).HasMaxLength(500);
-
-        builder.HasMany(r => r.UserRoles).WithOne(ur => ur.Role)
-            .HasForeignKey(ur => ur.RoleId).OnDelete(DeleteBehavior.Cascade);
+        builder.Property(r => r.Description).HasMaxLength(MaxLength.Summary);
     }
 }

@@ -1,20 +1,27 @@
-using DoAnTotNghiep.API.Common.Route;
-using DoAnTotNghiep.API.Data;
-using DoAnTotNghiep.API.Data.Seeders;
-using DoAnTotNghiep.API.Middleware;
-using DoAnTotNghiep.API.Repositories.Implements;
-using DoAnTotNghiep.API.Repositories.Interfaces;
+using Football_Management.API.Data;
+using Football_Management.API.Data.Seeders;
+using Football_Management.API.Extensions;
+// using Football_Management.API.Middleware;
+using Football_Management.API.Models.Entities;
+using Football_Management.API.Repositories.Implements;
+using Football_Management.API.Repositories.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Scalar.AspNetCore;
 using System.Text;
 
 [assembly: ApiController]
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddApplicationServices(typeof(Program).Assembly);
+builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
@@ -22,9 +29,6 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Register services
-// builder.Services.AddScoped<ITokenService, TokenService>();
-// builder.Services.AddScoped<IAuthService, AuthService>();
-// builder.Services.AddScoped<IPermissionService, PermissionService>();
 
 // // JWT Authentication
 var jwtSecret = builder.Configuration["Jwt:Secret"];
@@ -92,8 +96,6 @@ builder.Services.AddCors(options =>
             .AllowCredentials();
     });
 });
-builder.Services.AddControllers(opt => opt.Conventions.Add(new ApiRouteConvention("api/v1")));
-
 var app = builder.Build();
 await DataSeeder.SeedAsync(app.Services);
 
@@ -101,13 +103,14 @@ await DataSeeder.SeedAsync(app.Services);
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
-app.UseMiddleware<ExceptionMiddleware>();
+// app.UseMiddleware<ExceptionMiddleware>();
+app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseHttpsRedirection();
 
 app.MapControllers();
 app.Run();

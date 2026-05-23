@@ -1,6 +1,6 @@
-using DoAnTotNghiep.API.Models.DTOs.Base;
+using Football_Management.API.Models.DTOs.Base;
 
-namespace DoAnTotNghiep.API.Models.DTOs;
+namespace Football_Management.API.Models.DTOs;
 
 public class UserDto : BaseDto
 {
@@ -11,8 +11,8 @@ public class UserDto : BaseDto
 
 public class CreateUpdateUserDto
 {
-    public required string Email { get; set; }
-    public required string Name { get; set; }
-    public required string Password { get; set; }
+    public string Email { get; set; }
+    public string Name { get; set; }
+    public string Password { get; set; }
     public string? Phone { get; set; }
 }

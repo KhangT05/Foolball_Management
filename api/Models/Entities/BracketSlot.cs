@@ -1,6 +1,6 @@
-// using DoAnTotNghiep.API.Models.Entities.Base;
+// using Football_Management.API.Models.Entities.Base;
 
-// namespace DoAnTotNghiep.API.Models.Entities;
+// namespace Football_Management.API.Models.Entities;
 
 // /// <summary>
 // /// Đại diện cho một vị trí trong nhánh đấu (Bracket) của giải đấu thể thao điện tử.

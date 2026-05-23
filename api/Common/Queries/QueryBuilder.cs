@@ -1,8 +1,8 @@
 using System.Linq.Expressions;
-using DoAnTotNghiep.API.Common.Enums;
-using DoAnTotNghiep.API.Common.Queries.Interface;
+using Football_Management.API.Common.Enums;
+using Football_Management.API.Common.Queries.Interface;
 
-namespace DoAnTotNghiep.API.Common.Queries;
+namespace Football_Management.API.Common.Queries;
 
 public class QueryBuilder<T> : IQueryBuilder<T>
 {

@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
-using DoAnTotNghiep.API.Common.Enums;
+using Football_Management.API.Common.Enums;
 
-namespace DoAnTotNghiep.API.Common.Queries.Interface;
+namespace Football_Management.API.Common.Queries.Interface;
 
 /// <summary>
 /// Fluent builder để xây dựng IQueryable động cho EF Core.

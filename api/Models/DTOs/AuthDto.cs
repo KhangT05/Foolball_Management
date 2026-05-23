@@ -1,13 +1,18 @@
-namespace DoAnTotNghiep.API.Models.DTOs;
+namespace Football_Management.API.Models.DTOs;
 
-public class AuthLoginDto
+public record AuthLoginRequest
 {
-    public string? Email { get; set; }
-    public string? Password { get; set; }
+    public string Email { get; set; } = default!;
+    public string Password { get; set; } = default!;
 }
-public class AuthRegisterDto
+public record AuthRegisterRequest
 {
-    public string? Name { get; set; }
-    public string? Email { get; set; }
-    public string? Password { get; set; }
+    public string Name { get; set; } = default!;
+    public string Email { get; set; } = default!;
+    public string Password { get; set; } = default!;
+}
+public record AuthResponse
+{
+    public string AccessToken { get; set; }
+    public DateTime ExpiresAt { get; set; }
 }

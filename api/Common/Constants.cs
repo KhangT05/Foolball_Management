@@ -1,4 +1,4 @@
-namespace DoAnTotNghiep.API.Common;
+namespace Football_Management.API.Common;
 
 public static class MaxLength
 {
