@@ -9,13 +9,24 @@ public class FootballManagemenAutoMapper : Profile
     public FootballManagemenAutoMapper()
     {
         MapUser();
+        MapRole();
+        MapAuth();
     }
     private void MapUser()
     {
-        CreateMap<User, UserDto>().ForMember(u => u.Id, opt => opt.Ignore());
+        CreateMap<User, UserDto>();
+        CreateMap<CreateUpdateUserDto, User>()
+          .ForMember(dest => dest.Password, opt => opt.Ignore());
     }
-    // private void MapAuth()
-    // {
-    //     CreateMap<AccessResult, AuthResponse>()
-    // }
+    private void MapRole()
+    {
+        CreateMap<Role, RoleDto>();
+        CreateMap<CreateUpdateRoleDto, Role>();
+    }
+    private void MapAuth()
+    {
+        CreateMap<AuthRegisterRequest, User>()
+            .ForMember(dest => dest.Password, opt => opt.Ignore())
+            .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone));
+    }
 }

@@ -1,56 +1,63 @@
-// using System.Net;
-// using Football_Management.API.Common;
-// using Football_Management.API.Common.Exceptions;
+using System.Diagnostics;
+using System.Net;
+using System.Text.Json;
+using Football_Management.API.Common.Exceptions;
+namespace Football_Management.API.Middleware;
 
-// namespace Football_Management.API.Middleware;
+public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
+{
+    public async Task InvokeAsync(HttpContext context)
+    {
+        var sw = Stopwatch.StartNew();
+        try
+        {
+            await next(context);
+            sw.Stop();
+            logger.LogInformation("{Method} {Path} {StatusCode} {Elapsed}ms",
+                context.Request.Method,
+                context.Request.Path,
+                context.Response.StatusCode,
+                sw.ElapsedMilliseconds);
+        }
+        catch (AppException ex)
+        {
+            sw.Stop();
+            logger.LogWarning("{Method} {Path} {StatusCode} {Elapsed}ms — {Message}",
+                context.Request.Method,
+                context.Request.Path,
+                (int)ex.StatusCode,
+                sw.ElapsedMilliseconds,
+                ex.Message);
 
-// public class ExceptionMiddleware
-// {
-//     private readonly RequestDelegate _next;
-//     private readonly ILogger<ExceptionMiddleware> _logger;
-//     public ExceptionMiddleware(
-//         RequestDelegate next,
-//         ILogger<ExceptionMiddleware> logger
-//     )
-//     {
-//         _next = next;
-//         _logger = logger;
-//     }
-//     public async Task InvokeAsync(HttpContext context)
-//     {
-//         try
-//         {
-//             await _next(context);
-//         }
-//         catch (Exception ex)
-//         {
-//             await HandleAsync(context, ex);
-//         }
-//     }
-//     private async Task HandleAsync(HttpContext context, Exception ex)
-//     {
-//         APIResponse<object> response;
-//         int statusCode;
+            var (statusCode, message) = ex.StatusCode switch
+            {
+                HttpStatusCode.Unauthorized => (401, "Chưa xác thực."),
+                _ => (403, "Không có quyền.")
+            };
 
-//         if (ex is AppException appEx)
-//         {
-//             _logger.LogWarning("AppException [{Code}] {Path}: {Msg}",
-//                 (int)appEx.StatusCode, context.Request.Path, appEx.Message);
+            await WriteAsync(context, statusCode, message);
+        }
+        catch (Exception ex)
+        {
+            sw.Stop();
+            logger.LogError(ex, "{Method} {Path} 500 {Elapsed}ms",
+                context.Request.Method,
+                context.Request.Path,
+                sw.ElapsedMilliseconds,
+                ex.Message);
 
-//             response = appEx.ToResponse();
-//             statusCode = (int)appEx.StatusCode;
-//         }
-//         else
-//         {
-//             _logger.LogError(ex, "Unhandled: {Path}", context.Request.Path);
+            await WriteAsync(context, 403, "Không có quyền.");
+        }
+    }
 
-//             response = APIResponse<object>.Fail(null, "Đã xảy ra lỗi hệ thống.",
-//                              HttpStatusCode.InternalServerError);
-//             statusCode = 500;
-//         }
-
-//         context.Response.ContentType = "application/json";
-//         context.Response.StatusCode = statusCode;
-//         await context.Response.WriteAsJsonAsync(response);
-//     }
-// }
+    private static Task WriteAsync(HttpContext context, int statusCode, string message)
+    {
+        context.Response.StatusCode = statusCode;
+        context.Response.ContentType = "application/json";
+        return context.Response.WriteAsync(JsonSerializer.Serialize(new
+        {
+            statusCode,
+            message
+        }));
+    }
+}

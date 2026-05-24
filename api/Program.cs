@@ -1,12 +1,11 @@
 using Football_Management.API.Data;
 using Football_Management.API.Data.Seeders;
+using Football_Management.API.Extensions;
+using Football_Management.API.Middleware;
 using Football_Management.API.Models.Entities;
-using Football_Management.API.Repositories.Implements;
-using Football_Management.API.Repositories.Interfaces;
-using Football_Management.API.Services.Implements;
-using Football_Management.API.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -24,26 +23,23 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddMaps(typeof(Program).Assembly);
 });
 
-builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
-
+// DB
 builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
-// Register repositories
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+// IDENTITY
+builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 
-// Register services
-
-// // JWT Authentication
+// JWT Authentication
 var jwtSecret = builder.Configuration["Jwt:Secret"];
 // if (string.IsNullOrEmpty(jwtSecret))
 // {
 //     throw new InvalidOperationException("Jwt:Secret not configured in appsettings");
 // }
+// auto scan and use di
+builder.Services.AddApplicationServices(typeof(Program).Assembly);
 
 var key = Encoding.UTF8.GetBytes(jwtSecret);
-
-builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services
     .AddAuthentication(options =>
@@ -67,6 +63,7 @@ builder.Services
     });
 
 // Add CSRF protection
+
 // Configure CSRF (Anti-Forgery) protection
 builder.Services.AddAntiforgery(options =>
 {
@@ -112,7 +109,7 @@ if (app.Environment.IsDevelopment())
 {
 }
 
-// app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
 app.UseAuthentication();

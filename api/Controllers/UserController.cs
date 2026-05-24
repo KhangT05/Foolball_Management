@@ -11,7 +11,10 @@ public class UserController
     : BaseController<User, UserDto, CreateUpdateUserDto, CreateUpdateUserDto>
 {
     private readonly IUserService _userService;
-    public UserController(IUserService userService) : base(userService)
+    public UserController(
+        IUserService userService,
+        ILogger<UserController> logger
+    ) : base(userService, logger)
     {
         _userService = userService;
     }

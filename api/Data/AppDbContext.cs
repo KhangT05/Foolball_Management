@@ -40,6 +40,8 @@ public class AppDbContext : DbContext
     #endregion
     // User Management
     public DbSet<User> Users { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<CsrfToken> CsrfTokens { get; set; }
     public DbSet<Role> Roles { get; set; }
 
     // Tournament Management

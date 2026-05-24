@@ -8,36 +8,36 @@ namespace Football_Management.API.Repositories.Implements;
 public class BaseRepository<TEntity> : IBaseRepository<TEntity>
     where TEntity : BaseEntity
 {
-    protected readonly AppDbContext _db;
-    protected readonly DbSet<TEntity> _dbSet;
+    protected readonly AppDbContext Db;
+    protected readonly DbSet<TEntity> DbSet;
     public BaseRepository(
         AppDbContext db
     )
     {
-        _db = db;
-        _dbSet = db.Set<TEntity>();
+        Db = db;
+        DbSet = db.Set<TEntity>();
     }
     public async Task<TEntity?> FindAsync(int Id)
-        => await _dbSet.FindAsync(Id);
+        => await DbSet.FindAsync(Id);
     public async Task<TEntity?> FindOrFailAsync(int Id)
-    => await _dbSet.FindAsync(Id);
+    => await DbSet.FindAsync(Id);
     // ?? throw new NotFoundException($"{typeof(TEntity).Name} #{Id} không tồn tại.");
-    public IQueryable<TEntity> Query() => _dbSet.AsQueryable();
-    public async Task<List<TEntity>> GetAllAsync() => await _dbSet.ToListAsync();
+    public IQueryable<TEntity> Query() => DbSet.AsQueryable();
+    public async Task<List<TEntity>> GetAllAsync() => await DbSet.ToListAsync();
     public async Task<TEntity> AddAsync(TEntity entity)
     {
-        await _dbSet.AddAsync(entity);
+        await DbSet.AddAsync(entity);
         return entity;
     }
 
-    public void Update(TEntity entity) => _db.Entry(entity).State = EntityState.Modified;
-    public void Remove(TEntity entity) => _dbSet.Remove(entity);
+    public void Update(TEntity entity) => Db.Entry(entity).State = EntityState.Modified;
+    public void Remove(TEntity entity) => DbSet.Remove(entity);
     public void Restore(TEntity entity)
     {
         // entity.IsDeleted = false;
         Update(entity);
     }
-    public void RemovePermanently(TEntity entity) => _dbSet.Remove(entity);
+    public void RemovePermanently(TEntity entity) => DbSet.Remove(entity);
     public void RestoreRange(IEnumerable<TEntity> entities)
     {
         //foreach (var entity in entities)
@@ -57,9 +57,9 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity>
     // public void UpdateRange(IEnumerable<TEntity> entities)
     // {
     //     foreach (var entity in entities)
-    //         _db.Entry(entity).State = EntityState.Modified;
+    //         Db.Entry(entity).State = EntityState.Modified;
     // }
     // public async Task AddRangeAsync(IEnumerable<TEntity> entities) 
-    // => await _dbSet.AddRangeAsync(entities);
-    // public void RemoveRange(IEnumerable<TEntity> entities) => _dbSet.RemoveRange(entities);
+    // => await DbSet.AddRangeAsync(entities);
+    // public void RemoveRange(IEnumerable<TEntity> entities) => DbSet.RemoveRange(entities);
 }

@@ -1,7 +1,10 @@
+using System.Diagnostics;
 using System.Security.Claims;
 using Football_Management.API.Models.Entities.Base;
 using Football_Management.API.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Football_Management.API.Controllers.Base;
 
@@ -11,43 +14,67 @@ public abstract class BaseController<TEntity, TResponse, TCreateRequest, TUpdate
     where TEntity : BaseEntity
 {
     protected readonly IBaseService<TEntity, TResponse, TCreateRequest, TUpdateRequest> Service;
+    protected readonly ILogger Logger;
 
     protected BaseController(
-        IBaseService<TEntity, TResponse, TCreateRequest, TUpdateRequest> service)
+        IBaseService<TEntity, TResponse, TCreateRequest, TUpdateRequest> service,
+        ILogger logger
+        )
     {
         Service = service;
+        Logger = logger;
     }
 
-    // ── Auth helpers ──────────────────────────────────────────────
-    protected int CurrentUserId =>
-        int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)
-            ?? throw new InvalidOperationException("CurrentUserId called on unauthenticated request."));
-
-    protected string? CurrentUserEmail => User.FindFirstValue(ClaimTypes.Email);
-    protected string? CurrentUserRole => User.FindFirstValue(ClaimTypes.Role);
-    protected bool IsAuthenticated => User.Identity?.IsAuthenticated ?? false;
-
     // ── CRUD ──────────────────────────────────────────────────────
+    [AllowAnonymous]
     [HttpGet]
     public virtual async Task<IActionResult> GetAll()
-        => Ok(await Service.GetAllAsync());
+    {
+        var sw = Stopwatch.StartNew();
+        var result = await Service.GetAllAsync();
+        Logger.LogInformation("{Entity} GetAll {Elapsed}ms", typeof(TEntity).Name, sw.ElapsedMilliseconds);
+        return Ok(result);
+    }
 
+    [Authorize]
     [HttpGet("{id}")]
     public virtual async Task<IActionResult> GetById(int id)
-        => Ok(await Service.GetByIdAsync(id));
-
+    {
+        var sw = Stopwatch.StartNew();
+        var result = await Service.GetAllAsync();
+        Logger.LogInformation("{Entity} GetAll {Elapsed}ms", typeof(TEntity).Name, sw.ElapsedMilliseconds);
+        return Ok(result);
+    }
+    [Authorize]
     [HttpPost]
     public virtual async Task<IActionResult> Create([FromBody] TCreateRequest request)
-        => StatusCode(StatusCodes.Status201Created, await Service.CreateAsync(request));
+    {
+        var sw = Stopwatch.StartNew();
+        var result = await Service.CreateAsync(request);
+        Logger.LogInformation("{Entity} Created {Elapsed}ms",
+            typeof(TEntity).Name, sw.ElapsedMilliseconds);
+        return StatusCode(201, result);
+    }
 
+    [Authorize]
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(int id, [FromBody] TUpdateRequest request)
-        => Ok(await Service.UpdateAsync(id, request));
+    {
+        var sw = Stopwatch.StartNew();
+        var result = await Service.UpdateAsync(id, request);
+        Logger.LogInformation("{Entity}#{Id} Updated {Elapsed}ms",
+            typeof(TEntity).Name, id, sw.ElapsedMilliseconds);
+        return Ok(result);
+    }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public virtual async Task<IActionResult> Delete(int id)
     {
+        var sw = Stopwatch.StartNew();
         await Service.DeleteAsync(id);
+        Logger.LogInformation("{Entity}#{Id} Deleted {Elapsed}ms",
+            typeof(TEntity).Name, id, sw.ElapsedMilliseconds);
         return NoContent();
     }
 

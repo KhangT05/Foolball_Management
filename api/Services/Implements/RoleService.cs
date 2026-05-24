@@ -5,18 +5,15 @@ using Football_Management.API.Models.DTOs;
 using Football_Management.API.Models.Entities;
 using Football_Management.API.Repositories.Interfaces;
 using Football_Management.API.Services.Interfaces;
-using Microsoft.AspNetCore.Identity;
 
 namespace Football_Management.API.Services.Implements;
 
 [Scoped]
-public class UserService :
- BaseService<User, UserDto, CreateUpdateUserDto, CreateUpdateUserDto>, IUserService
+public class RoleService :
+ BaseService<Role, RoleDto, CreateUpdateRoleDto, CreateUpdateRoleDto>, IRoleService
 {
-    private readonly IPasswordHasher<User> _passwordHasher;
-
-    public UserService(
-        IUserRepository repository,
+    public RoleService(
+        IRoleRepository repository,
         AppDbContext db,
         IMapper mapper)
         : base(repository, db, mapper)
