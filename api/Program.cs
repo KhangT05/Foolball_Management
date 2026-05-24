@@ -1,15 +1,14 @@
 using Football_Management.API.Data;
 using Football_Management.API.Data.Seeders;
-using Football_Management.API.Extensions;
-// using Football_Management.API.Middleware;
 using Football_Management.API.Models.Entities;
 using Football_Management.API.Repositories.Implements;
 using Football_Management.API.Repositories.Interfaces;
+using Football_Management.API.Services.Implements;
+using Football_Management.API.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Scalar.AspNetCore;
 using System.Text;
 
 [assembly: ApiController]
@@ -17,11 +16,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
-builder.Services.AddApplicationServices(typeof(Program).Assembly);
+
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddMaps(typeof(Program).Assembly);
+});
+
 builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
+
 builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
@@ -38,6 +42,9 @@ var jwtSecret = builder.Configuration["Jwt:Secret"];
 // }
 
 var key = Encoding.UTF8.GetBytes(jwtSecret);
+
+builder.Services.AddScoped<IUserService, UserService>();
+
 builder.Services
     .AddAuthentication(options =>
     {
@@ -80,6 +87,7 @@ builder.Services.AddAntiforgery(options =>
 });
 
 builder.Services.AddAuthorization();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", builder =>
@@ -102,8 +110,6 @@ await DataSeeder.SeedAsync(app.Services);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.MapScalarApiReference();
 }
 
 // app.UseMiddleware<ExceptionMiddleware>();
