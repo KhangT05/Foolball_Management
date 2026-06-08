@@ -9,26 +9,34 @@ jobs:
 
   build:
 
+    runs-on: ubuntu-latest
+    working-directory: football_management
     strategy:
       matrix:
-        node-version: 20
+        node-version: [20]
 
-    runs-on: ubuntu-latest
+
 
     steps:
+
     - name: Checkout repository
       uses: actions/checkout@v4
+
+    - name: Setup Nodejs
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: npm
         cache-dependency-path: football_management/api/package-lock.json
 
-    - run: npm ci
-    - run: npm run lint
-    - run: npm run build
-    - run: npm test
+    - name: Install DI
+      run: npm ci
     
+    - name: LINT
+      run: npm run lint
+    
+    - name: BUILD
+      run: npm run build
 
-    env:
-      Solution_Name: Football_Management
+    - name: TEST
+      run: npm test
