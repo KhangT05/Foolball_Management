@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { makeResponse } from "../common/response/apiresponse.js";
-import { BaseService } from "../services/baseservice.js";
+import { makeResponse } from "../common/api.response.js";
+import { BaseService } from "../services/base.service.js";
 
 export abstract class BaseController<T, CreateDTO, UpdateDTO> {
     constructor(

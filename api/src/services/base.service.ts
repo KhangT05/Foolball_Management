@@ -1,4 +1,4 @@
-import { IBaseRepository } from "../repositories/ibaserepository.js";
+import { IBaseRepository } from "../repositories/ibase.repository.js";
 
 
 export abstract class BaseService<T, CreateDTO, UpdateDTO> {

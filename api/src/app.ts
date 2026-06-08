@@ -4,16 +4,16 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import cors from "cors";
-import { PrismaClient } from "./generated/prisma/client.js";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express"
+import prisma from "./libs/prisma.js";
 
 const app = express();
 
 const adapter = new PrismaMariaDb(process.env.DATABASE_URL!);
 
-const db = new PrismaClient({
+const db = prisma({
     adapter,
     log: process.env.NODE_ENV === "development" ? ["query", "warn", "error"] : ["error"],
 });

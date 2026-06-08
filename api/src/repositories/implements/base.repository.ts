@@ -1,5 +1,5 @@
 import { PrismaClient } from "../../generated/prisma/client.js";
-import { IBaseRepository } from "../ibaserepository.js";
+import { IBaseRepository } from "../ibase.repository.js";
 
 type ModelDelegate = {
     findFirst(args: any): Promise<any>;

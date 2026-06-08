@@ -36,9 +36,7 @@ model User {
   matches            Match[]
   // teams       Team[]
   passkeyCredentials PasskeyCredential[]
-  csrfTokens         CsrfToken[]
   oauthAccounts      OAuthAccount[]
-  refreshTokens      RefreshToken[]
   teamLeaders        TeamLeader[]
 
   @@map("users")
@@ -559,17 +557,6 @@ model PasskeyCredential {
   @@map("passkey_credentials")
 }
 
-model CsrfToken {
-  id         Int      @id @default(autoincrement())
-  user_id    Int
-  token      String
-  created_at DateTime @default(now())
-
-  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
-  @@map("csrf_tokens")
-}
-
 model OAuthAccount {
   id               Int       @id @default(autoincrement())
   user_id          Int
@@ -587,21 +574,6 @@ model OAuthAccount {
 
   @@unique([provider, provider_user_id])
   @@map("oauth_accounts")
-}
-
-model RefreshToken {
-  id         Int      @id @default(autoincrement())
-  user_id    Int
-  token      String
-  expires_at DateTime
-  created_at DateTime @default(now())
-  is_revoked Boolean  @default(false)
-  was_used   Boolean  @default(false)
-  ip_address String?
-
-  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
-  @@map("refresh_tokens")
 }
 
 model Venue {
