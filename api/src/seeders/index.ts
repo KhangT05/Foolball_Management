@@ -1,6 +1,6 @@
-import { PrismaClient } from "../generated/prisma/client";
-import { seedRoles } from "./roleSeeder";
-import { seedUsers } from "./userSeeder";
+import { PrismaClient } from "../generated/prisma/client.js";
+import { seedRoles } from "./roleSeeder.js";
+import { seedUsers } from "./userSeeder.js";
 
 export async function runSeeders(db: PrismaClient): Promise<void> {
     console.log("[DataSeeder] starting...\n");

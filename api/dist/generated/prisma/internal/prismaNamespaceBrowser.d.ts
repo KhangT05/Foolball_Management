@@ -1,0 +1,545 @@
+import * as runtime from "@prisma/client/runtime/index-browser";
+export type * from '../models.js';
+export type * from './prismaNamespace.js';
+export declare const Decimal: typeof runtime.Decimal;
+export declare const NullTypes: {
+    DbNull: (new (secret: never) => typeof runtime.DbNull);
+    JsonNull: (new (secret: never) => typeof runtime.JsonNull);
+    AnyNull: (new (secret: never) => typeof runtime.AnyNull);
+};
+/**
+ * Helper for filtering JSON entries that have `null` on the database (empty on the db)
+ *
+ * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+ */
+export declare const DbNull: import("@prisma/client-runtime-utils").DbNullClass;
+/**
+ * Helper for filtering JSON entries that have JSON `null` values (not empty on the db)
+ *
+ * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+ */
+export declare const JsonNull: import("@prisma/client-runtime-utils").JsonNullClass;
+/**
+ * Helper for filtering JSON entries that are `Prisma.DbNull` or `Prisma.JsonNull`
+ *
+ * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+ */
+export declare const AnyNull: import("@prisma/client-runtime-utils").AnyNullClass;
+export declare const ModelName: {
+    readonly User: "User";
+    readonly Role: "Role";
+    readonly User_Role: "User_Role";
+    readonly Tournament: "Tournament";
+    readonly Season: "Season";
+    readonly SeasonRule: "SeasonRule";
+    readonly Phase: "Phase";
+    readonly Group: "Group";
+    readonly GroupTeam: "GroupTeam";
+    readonly Team: "Team";
+    readonly Player: "Player";
+    readonly TeamPlayer: "TeamPlayer";
+    readonly SeasonTeam: "SeasonTeam";
+    readonly Match: "Match";
+    readonly MatchEvent: "MatchEvent";
+    readonly PasskeyCredential: "PasskeyCredential";
+    readonly OAuthAccount: "OAuthAccount";
+    readonly Venue: "Venue";
+    readonly TeamLeader: "TeamLeader";
+    readonly TeamStanding: "TeamStanding";
+    readonly PlayerStatistic: "PlayerStatistic";
+    readonly Notification: "Notification";
+    readonly Payment: "Payment";
+    readonly SeasonTeamPlayer: "SeasonTeamPlayer";
+    readonly MatchResult: "MatchResult";
+};
+export type ModelName = (typeof ModelName)[keyof typeof ModelName];
+export declare const TransactionIsolationLevel: {
+    readonly ReadUncommitted: "ReadUncommitted";
+    readonly ReadCommitted: "ReadCommitted";
+    readonly RepeatableRead: "RepeatableRead";
+    readonly Serializable: "Serializable";
+};
+export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
+export declare const UserScalarFieldEnum: {
+    readonly id: "id";
+    readonly name: "name";
+    readonly email: "email";
+    readonly password: "password";
+    readonly phone: "phone";
+    readonly is_active: "is_active";
+    readonly email_verified: "email_verified";
+    readonly email_verified_at: "email_verified_at";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+};
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum];
+export declare const RoleScalarFieldEnum: {
+    readonly id: "id";
+    readonly name: "name";
+    readonly description: "description";
+    readonly is_active: "is_active";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+};
+export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof RoleScalarFieldEnum];
+export declare const User_RoleScalarFieldEnum: {
+    readonly user_id: "user_id";
+    readonly role_id: "role_id";
+};
+export type User_RoleScalarFieldEnum = (typeof User_RoleScalarFieldEnum)[keyof typeof User_RoleScalarFieldEnum];
+export declare const TournamentScalarFieldEnum: {
+    readonly id: "id";
+    readonly name: "name";
+    readonly description: "description";
+    readonly logo: "logo";
+    readonly max_teams: "max_teams";
+    readonly is_active: "is_active";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+    readonly deleted_at: "deleted_at";
+    readonly user_id: "user_id";
+};
+export type TournamentScalarFieldEnum = (typeof TournamentScalarFieldEnum)[keyof typeof TournamentScalarFieldEnum];
+export declare const SeasonScalarFieldEnum: {
+    readonly id: "id";
+    readonly name: "name";
+    readonly description: "description";
+    readonly status: "status";
+    readonly start_date: "start_date";
+    readonly end_date: "end_date";
+    readonly registration_deadline: "registration_deadline";
+    readonly is_registration_open: "is_registration_open";
+    readonly is_active: "is_active";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+    readonly deleted_at: "deleted_at";
+    readonly is_deleted: "is_deleted";
+    readonly tournament_id: "tournament_id";
+    readonly user_id: "user_id";
+};
+export type SeasonScalarFieldEnum = (typeof SeasonScalarFieldEnum)[keyof typeof SeasonScalarFieldEnum];
+export declare const SeasonRuleScalarFieldEnum: {
+    readonly id: "id";
+    readonly is_active: "is_active";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+    readonly created_by_id: "created_by_id";
+    readonly updated_by_id: "updated_by_id";
+    readonly deleted_at: "deleted_at";
+    readonly deleted_by_id: "deleted_by_id";
+    readonly is_deleted: "is_deleted";
+    readonly season_id: "season_id";
+    readonly points_per_win: "points_per_win";
+    readonly points_per_draw: "points_per_draw";
+    readonly points_per_loss: "points_per_loss";
+    readonly yellow_cards_suspension: "yellow_cards_suspension";
+    readonly max_players_per_team: "max_players_per_team";
+    readonly min_players_per_team: "min_players_per_team";
+    readonly registration_fee: "registration_fee";
+    readonly forfeit_score: "forfeit_score";
+    readonly teams_advance_per_group: "teams_advance_per_group";
+    readonly tiebreaker_order: "tiebreaker_order";
+    readonly user_id: "user_id";
+};
+export type SeasonRuleScalarFieldEnum = (typeof SeasonRuleScalarFieldEnum)[keyof typeof SeasonRuleScalarFieldEnum];
+export declare const PhaseScalarFieldEnum: {
+    readonly id: "id";
+    readonly season_id: "season_id";
+    readonly name: "name";
+    readonly type: "type";
+    readonly format: "format";
+    readonly order: "order";
+    readonly start_date: "start_date";
+    readonly end_date: "end_date";
+    readonly is_active: "is_active";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+};
+export type PhaseScalarFieldEnum = (typeof PhaseScalarFieldEnum)[keyof typeof PhaseScalarFieldEnum];
+export declare const GroupScalarFieldEnum: {
+    readonly id: "id";
+    readonly phase_id: "phase_id";
+    readonly name: "name";
+    readonly is_active: "is_active";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+};
+export type GroupScalarFieldEnum = (typeof GroupScalarFieldEnum)[keyof typeof GroupScalarFieldEnum];
+export declare const GroupTeamScalarFieldEnum: {
+    readonly group_id: "group_id";
+    readonly team_id: "team_id";
+};
+export type GroupTeamScalarFieldEnum = (typeof GroupTeamScalarFieldEnum)[keyof typeof GroupTeamScalarFieldEnum];
+export declare const TeamScalarFieldEnum: {
+    readonly id: "id";
+    readonly name: "name";
+    readonly coach_name: "coach_name";
+    readonly logo: "logo";
+    readonly description: "description";
+    readonly is_active: "is_active";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+    readonly deleted_at: "deleted_at";
+    readonly is_deleted: "is_deleted";
+    readonly user_id: "user_id";
+};
+export type TeamScalarFieldEnum = (typeof TeamScalarFieldEnum)[keyof typeof TeamScalarFieldEnum];
+export declare const PlayerScalarFieldEnum: {
+    readonly id: "id";
+    readonly date_of_birth: "date_of_birth";
+    readonly position: "position";
+    readonly height: "height";
+    readonly weight: "weight";
+    readonly nationality: "nationality";
+    readonly avatar: "avatar";
+    readonly is_active: "is_active";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+    readonly deleted_at: "deleted_at";
+    readonly is_deleted: "is_deleted";
+    readonly user_id: "user_id";
+};
+export type PlayerScalarFieldEnum = (typeof PlayerScalarFieldEnum)[keyof typeof PlayerScalarFieldEnum];
+export declare const TeamPlayerScalarFieldEnum: {
+    readonly id: "id";
+    readonly team_id: "team_id";
+    readonly player_id: "player_id";
+    readonly jersey_number: "jersey_number";
+    readonly position: "position";
+    readonly role: "role";
+    readonly status: "status";
+    readonly approval_status: "approval_status";
+    readonly is_active: "is_active";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+    readonly deleted_at: "deleted_at";
+    readonly is_deleted: "is_deleted";
+    readonly user_id: "user_id";
+};
+export type TeamPlayerScalarFieldEnum = (typeof TeamPlayerScalarFieldEnum)[keyof typeof TeamPlayerScalarFieldEnum];
+export declare const SeasonTeamScalarFieldEnum: {
+    readonly id: "id";
+    readonly season_id: "season_id";
+    readonly team_id: "team_id";
+    readonly registered_date: "registered_date";
+    readonly status: "status";
+    readonly is_active: "is_active";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+    readonly deleted_at: "deleted_at";
+    readonly is_deleted: "is_deleted";
+    readonly group_id: "group_id";
+    readonly user_id: "user_id";
+};
+export type SeasonTeamScalarFieldEnum = (typeof SeasonTeamScalarFieldEnum)[keyof typeof SeasonTeamScalarFieldEnum];
+export declare const MatchScalarFieldEnum: {
+    readonly id: "id";
+    readonly phase_id: "phase_id";
+    readonly group_id: "group_id";
+    readonly home_team_id: "home_team_id";
+    readonly away_team_id: "away_team_id";
+    readonly scheduled_at: "scheduled_at";
+    readonly played_at: "played_at";
+    readonly home_score: "home_score";
+    readonly away_score: "away_score";
+    readonly status: "status";
+    readonly round: "round";
+    readonly leg: "leg";
+    readonly next_match_id: "next_match_id";
+    readonly is_active: "is_active";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+    readonly deleted_at: "deleted_at";
+    readonly is_deleted: "is_deleted";
+    readonly user_id: "user_id";
+    readonly venue_id: "venue_id";
+    readonly is_published: "is_published";
+    readonly referee: "referee";
+    readonly season_id: "season_id";
+};
+export type MatchScalarFieldEnum = (typeof MatchScalarFieldEnum)[keyof typeof MatchScalarFieldEnum];
+export declare const MatchEventScalarFieldEnum: {
+    readonly id: "id";
+    readonly match_id: "match_id";
+    readonly player_id: "player_id";
+    readonly team_id: "team_id";
+    readonly type: "type";
+    readonly minute: "minute";
+    readonly note: "note";
+    readonly period: "period";
+    readonly added_minute: "added_minute";
+    readonly card_color: "card_color";
+    readonly sub_out_player_id: "sub_out_player_id";
+    readonly created_at: "created_at";
+};
+export type MatchEventScalarFieldEnum = (typeof MatchEventScalarFieldEnum)[keyof typeof MatchEventScalarFieldEnum];
+export declare const PasskeyCredentialScalarFieldEnum: {
+    readonly id: "id";
+    readonly user_id: "user_id";
+    readonly device_id: "device_id";
+    readonly credential_id: "credential_id";
+    readonly public_key: "public_key";
+    readonly sign_count: "sign_count";
+    readonly aaguid: "aaguid";
+    readonly is_backup_eligible: "is_backup_eligible";
+    readonly is_backed_up: "is_backed_up";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+};
+export type PasskeyCredentialScalarFieldEnum = (typeof PasskeyCredentialScalarFieldEnum)[keyof typeof PasskeyCredentialScalarFieldEnum];
+export declare const OAuthAccountScalarFieldEnum: {
+    readonly id: "id";
+    readonly user_id: "user_id";
+    readonly provider: "provider";
+    readonly provider_user_id: "provider_user_id";
+    readonly email: "email";
+    readonly email_verified: "email_verified";
+    readonly avatar_url: "avatar_url";
+    readonly access_token: "access_token";
+    readonly token_expires_at: "token_expires_at";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+};
+export type OAuthAccountScalarFieldEnum = (typeof OAuthAccountScalarFieldEnum)[keyof typeof OAuthAccountScalarFieldEnum];
+export declare const VenueScalarFieldEnum: {
+    readonly id: "id";
+    readonly name: "name";
+    readonly address: "address";
+    readonly is_active: "is_active";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+    readonly deleted_at: "deleted_at";
+    readonly is_deleted: "is_deleted";
+};
+export type VenueScalarFieldEnum = (typeof VenueScalarFieldEnum)[keyof typeof VenueScalarFieldEnum];
+export declare const TeamLeaderScalarFieldEnum: {
+    readonly id: "id";
+    readonly team_id: "team_id";
+    readonly user_id: "user_id";
+    readonly is_active: "is_active";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+    readonly deleted_at: "deleted_at";
+    readonly is_deleted: "is_deleted";
+};
+export type TeamLeaderScalarFieldEnum = (typeof TeamLeaderScalarFieldEnum)[keyof typeof TeamLeaderScalarFieldEnum];
+export declare const TeamStandingScalarFieldEnum: {
+    readonly id: "id";
+    readonly team_id: "team_id";
+    readonly group_id: "group_id";
+    readonly position: "position";
+    readonly matches_played: "matches_played";
+    readonly wins: "wins";
+    readonly draws: "draws";
+    readonly losses: "losses";
+    readonly goals_for: "goals_for";
+    readonly goals_against: "goals_against";
+    readonly points: "points";
+    readonly is_active: "is_active";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+    readonly deleted_at: "deleted_at";
+    readonly is_deleted: "is_deleted";
+};
+export type TeamStandingScalarFieldEnum = (typeof TeamStandingScalarFieldEnum)[keyof typeof TeamStandingScalarFieldEnum];
+export declare const PlayerStatisticScalarFieldEnum: {
+    readonly id: "id";
+    readonly player_id: "player_id";
+    readonly team_id: "team_id";
+    readonly season_id: "season_id";
+    readonly matches_played: "matches_played";
+    readonly goals_scored: "goals_scored";
+    readonly assists: "assists";
+    readonly yellow_cards: "yellow_cards";
+    readonly red_cards: "red_cards";
+    readonly minutes_played: "minutes_played";
+    readonly accumulated_yellow_cards: "accumulated_yellow_cards";
+    readonly is_suspended: "is_suspended";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+};
+export type PlayerStatisticScalarFieldEnum = (typeof PlayerStatisticScalarFieldEnum)[keyof typeof PlayerStatisticScalarFieldEnum];
+export declare const NotificationScalarFieldEnum: {
+    readonly id: "id";
+    readonly title: "title";
+    readonly content: "content";
+    readonly type: "type";
+    readonly source: "source";
+    readonly season_id: "season_id";
+    readonly target_team_id: "target_team_id";
+    readonly recipient_user_id: "recipient_user_id";
+    readonly is_read: "is_read";
+    readonly ref_entity_type: "ref_entity_type";
+    readonly ref_entity_id: "ref_entity_id";
+    readonly is_active: "is_active";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+    readonly deleted_at: "deleted_at";
+    readonly is_deleted: "is_deleted";
+};
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum];
+export declare const PaymentScalarFieldEnum: {
+    readonly id: "id";
+    readonly season_team_id: "season_team_id";
+    readonly amount: "amount";
+    readonly status: "status";
+    readonly transaction_ref: "transaction_ref";
+    readonly paid_at: "paid_at";
+    readonly confirmed_at: "confirmed_at";
+    readonly confirmed_by: "confirmed_by";
+    readonly is_active: "is_active";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+    readonly deleted_at: "deleted_at";
+    readonly is_deleted: "is_deleted";
+};
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum];
+export declare const SeasonTeamPlayerScalarFieldEnum: {
+    readonly id: "id";
+    readonly season_team_id: "season_team_id";
+    readonly team_player_id: "team_player_id";
+    readonly jersey_number: "jersey_number";
+    readonly is_active: "is_active";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+    readonly deleted_at: "deleted_at";
+    readonly is_deleted: "is_deleted";
+};
+export type SeasonTeamPlayerScalarFieldEnum = (typeof SeasonTeamPlayerScalarFieldEnum)[keyof typeof SeasonTeamPlayerScalarFieldEnum];
+export declare const MatchResultScalarFieldEnum: {
+    readonly id: "id";
+    readonly match_id: "match_id";
+    readonly winner_team_id: "winner_team_id";
+    readonly home_score: "home_score";
+    readonly away_score: "away_score";
+    readonly home_half_time_score: "home_half_time_score";
+    readonly away_half_time_score: "away_half_time_score";
+    readonly home_extra_time_score: "home_extra_time_score";
+    readonly away_extra_time_score: "away_extra_time_score";
+    readonly home_penalty_score: "home_penalty_score";
+    readonly away_penalty_score: "away_penalty_score";
+    readonly home_final_score: "home_final_score";
+    readonly away_final_score: "away_final_score";
+    readonly result_type: "result_type";
+    readonly status: "status";
+    readonly duration: "duration";
+    readonly notes: "notes";
+    readonly is_active: "is_active";
+    readonly created_at: "created_at";
+    readonly updated_at: "updated_at";
+    readonly deleted_at: "deleted_at";
+    readonly is_deleted: "is_deleted";
+};
+export type MatchResultScalarFieldEnum = (typeof MatchResultScalarFieldEnum)[keyof typeof MatchResultScalarFieldEnum];
+export declare const SortOrder: {
+    readonly asc: "asc";
+    readonly desc: "desc";
+};
+export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder];
+export declare const JsonNullValueInput: {
+    readonly JsonNull: import("@prisma/client-runtime-utils").JsonNullClass;
+};
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput];
+export declare const NullsOrder: {
+    readonly first: "first";
+    readonly last: "last";
+};
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder];
+export declare const UserOrderByRelevanceFieldEnum: {
+    readonly name: "name";
+    readonly email: "email";
+    readonly password: "password";
+    readonly phone: "phone";
+};
+export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum];
+export declare const RoleOrderByRelevanceFieldEnum: {
+    readonly name: "name";
+    readonly description: "description";
+};
+export type RoleOrderByRelevanceFieldEnum = (typeof RoleOrderByRelevanceFieldEnum)[keyof typeof RoleOrderByRelevanceFieldEnum];
+export declare const TournamentOrderByRelevanceFieldEnum: {
+    readonly name: "name";
+    readonly description: "description";
+    readonly logo: "logo";
+};
+export type TournamentOrderByRelevanceFieldEnum = (typeof TournamentOrderByRelevanceFieldEnum)[keyof typeof TournamentOrderByRelevanceFieldEnum];
+export declare const SeasonOrderByRelevanceFieldEnum: {
+    readonly name: "name";
+    readonly description: "description";
+};
+export type SeasonOrderByRelevanceFieldEnum = (typeof SeasonOrderByRelevanceFieldEnum)[keyof typeof SeasonOrderByRelevanceFieldEnum];
+export declare const JsonNullValueFilter: {
+    readonly DbNull: import("@prisma/client-runtime-utils").DbNullClass;
+    readonly JsonNull: import("@prisma/client-runtime-utils").JsonNullClass;
+    readonly AnyNull: import("@prisma/client-runtime-utils").AnyNullClass;
+};
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter];
+export declare const QueryMode: {
+    readonly default: "default";
+    readonly insensitive: "insensitive";
+};
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode];
+export declare const PhaseOrderByRelevanceFieldEnum: {
+    readonly name: "name";
+};
+export type PhaseOrderByRelevanceFieldEnum = (typeof PhaseOrderByRelevanceFieldEnum)[keyof typeof PhaseOrderByRelevanceFieldEnum];
+export declare const GroupOrderByRelevanceFieldEnum: {
+    readonly name: "name";
+};
+export type GroupOrderByRelevanceFieldEnum = (typeof GroupOrderByRelevanceFieldEnum)[keyof typeof GroupOrderByRelevanceFieldEnum];
+export declare const TeamOrderByRelevanceFieldEnum: {
+    readonly name: "name";
+    readonly coach_name: "coach_name";
+    readonly logo: "logo";
+    readonly description: "description";
+};
+export type TeamOrderByRelevanceFieldEnum = (typeof TeamOrderByRelevanceFieldEnum)[keyof typeof TeamOrderByRelevanceFieldEnum];
+export declare const PlayerOrderByRelevanceFieldEnum: {
+    readonly nationality: "nationality";
+    readonly avatar: "avatar";
+};
+export type PlayerOrderByRelevanceFieldEnum = (typeof PlayerOrderByRelevanceFieldEnum)[keyof typeof PlayerOrderByRelevanceFieldEnum];
+export declare const MatchOrderByRelevanceFieldEnum: {
+    readonly round: "round";
+    readonly referee: "referee";
+};
+export type MatchOrderByRelevanceFieldEnum = (typeof MatchOrderByRelevanceFieldEnum)[keyof typeof MatchOrderByRelevanceFieldEnum];
+export declare const MatchEventOrderByRelevanceFieldEnum: {
+    readonly note: "note";
+};
+export type MatchEventOrderByRelevanceFieldEnum = (typeof MatchEventOrderByRelevanceFieldEnum)[keyof typeof MatchEventOrderByRelevanceFieldEnum];
+export declare const PasskeyCredentialOrderByRelevanceFieldEnum: {
+    readonly device_id: "device_id";
+    readonly credential_id: "credential_id";
+    readonly public_key: "public_key";
+    readonly aaguid: "aaguid";
+};
+export type PasskeyCredentialOrderByRelevanceFieldEnum = (typeof PasskeyCredentialOrderByRelevanceFieldEnum)[keyof typeof PasskeyCredentialOrderByRelevanceFieldEnum];
+export declare const OAuthAccountOrderByRelevanceFieldEnum: {
+    readonly provider: "provider";
+    readonly provider_user_id: "provider_user_id";
+    readonly email: "email";
+    readonly avatar_url: "avatar_url";
+    readonly access_token: "access_token";
+};
+export type OAuthAccountOrderByRelevanceFieldEnum = (typeof OAuthAccountOrderByRelevanceFieldEnum)[keyof typeof OAuthAccountOrderByRelevanceFieldEnum];
+export declare const VenueOrderByRelevanceFieldEnum: {
+    readonly name: "name";
+    readonly address: "address";
+};
+export type VenueOrderByRelevanceFieldEnum = (typeof VenueOrderByRelevanceFieldEnum)[keyof typeof VenueOrderByRelevanceFieldEnum];
+export declare const NotificationOrderByRelevanceFieldEnum: {
+    readonly title: "title";
+    readonly content: "content";
+    readonly ref_entity_type: "ref_entity_type";
+};
+export type NotificationOrderByRelevanceFieldEnum = (typeof NotificationOrderByRelevanceFieldEnum)[keyof typeof NotificationOrderByRelevanceFieldEnum];
+export declare const PaymentOrderByRelevanceFieldEnum: {
+    readonly transaction_ref: "transaction_ref";
+};
+export type PaymentOrderByRelevanceFieldEnum = (typeof PaymentOrderByRelevanceFieldEnum)[keyof typeof PaymentOrderByRelevanceFieldEnum];
+export declare const MatchResultOrderByRelevanceFieldEnum: {
+    readonly notes: "notes";
+};
+export type MatchResultOrderByRelevanceFieldEnum = (typeof MatchResultOrderByRelevanceFieldEnum)[keyof typeof MatchResultOrderByRelevanceFieldEnum];
+//# sourceMappingURL=prismaNamespaceBrowser.d.ts.map

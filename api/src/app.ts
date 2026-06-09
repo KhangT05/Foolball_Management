@@ -4,19 +4,11 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import cors from "cors";
-import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express"
 import prisma from "./libs/prisma.js";
 
 const app = express();
-
-const adapter = new PrismaMariaDb(process.env.DATABASE_URL!);
-
-const db = prisma({
-    adapter,
-    log: process.env.NODE_ENV === "development" ? ["query", "warn", "error"] : ["error"],
-});
 
 app.use(helmet());
 app.use(cors());
@@ -59,7 +51,7 @@ const PORT = process.env.PORT ?? 3000;
 
 async function bootstrap() {
 
-    await db.$connect();
+    await prisma.$connect();
 
     app.listen(PORT, () => {
         console.log(`[App] port ${PORT} (${process.env.NODE_ENV})`);
@@ -67,9 +59,9 @@ async function bootstrap() {
 }
 
 bootstrap().catch((err) => {
-    console.error("[db] Failed to connect:", err);
+    console.error("[prisma] Failed to connect:", err);
     process.exit(1);
 });
 
-process.on("SIGINT", async () => { await db.$disconnect(); process.exit(0); });
-process.on("SIGTERM", async () => { await db.$disconnect(); process.exit(0); });
+process.on("SIGINT", async () => { await prisma.$disconnect(); process.exit(0); });
+process.on("SIGTERM", async () => { await prisma.$disconnect(); process.exit(0); });
