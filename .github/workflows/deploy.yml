@@ -34,6 +34,7 @@ jobs:
 
     - name: Install DI
       run: npm ci
+      working-directory: football_management/api
     
     - name: LINT
       run: npm run lint
