@@ -30,17 +30,23 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Install DI
+    - name: Install DI API
       run: npm ci
-    
+
+    - name: INSTALL DI FE
+      run: npm ci
+      working-directory: frontend
 
     - name: GENERATE PRISMA
       run: npx prisma generate
     # - name: LINT
     #   run: npm run lint || true
     
-    - name: BUILD
+    - name: BUILD API
       run: npm run build
 
+    - name: BUILD FE
+      run: npm run build
+      working-directory: frontend
     # - name: TEST
     #   run: npm test
