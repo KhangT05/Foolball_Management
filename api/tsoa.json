@@ -1,0 +1,21 @@
+{
+    "entryFile": "src/app.ts",
+    "noImplicitAdditionalProperties": "throw-on-extras",
+    "controllerPathGlobs": [
+        "src/controllers/*.ts"
+    ],
+    "spec": {
+        "outputDirectory": "src/generated",
+        "specVersion": 3,
+        "basePath": "/api/v1/",
+        "info": {
+            "title": "Football Management API",
+            "version": "1.0.0"
+        }
+    },
+    "routes": {
+        "routesDir": "src/generated",
+        "iocModule": "src/libs/ioc",
+        "esm": true
+    }
+}

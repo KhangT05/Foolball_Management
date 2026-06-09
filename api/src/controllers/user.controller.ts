@@ -1,19 +1,43 @@
-// import { Request, Response, NextFunction } from "express";
-// import { BaseController } from "./basecontroller.js";
-import { Prisma } from "../generated/prisma/browser.js";
-// import { Prisma } from "../generated/prisma/client.js";
-// export class UserController extends BaseController<
-//     User,
-//     Prisma.UserCreateInput,
-//     Prisma.UserUpdateInput
-// > {
-//     constructor(private readonly UserService: UserService) {
-//         super(UserService);
-//     }
+import { Controller, Get, Path, Tags, Route, Post, Patch, Body, SuccessResponse, Delete } from "tsoa";
+import { UserService, SafeUser } from "../services/user.service.js";
+import * as userSchema from "../dtos/user.schema.js";
 
-//     findBySeason = async (req: Request, res: Response, next: NextFunction) => {
-//         try {
-//             this.ok(res, await this.UserService.findBySeasonId(Number(req.params.seasonId)));
-//         } catch (err) { next(err); }
-//     };
-// }
+@Route("users")
+@Tags("Users")
+export class UserController extends Controller {
+  constructor(private service: UserService) {
+    super();
+  }
+
+  @Get("/")
+  async findAll(): Promise<SafeUser[]> {
+    return this.service.findAll();
+  }
+
+  @Get("{id}")
+  async findById(@Path() id: number): Promise<SafeUser> {
+    return this.service.findByIdOrFail(id);
+  }
+
+  @Post("/")
+  @SuccessResponse(201, "Created")
+  async create(@Body() body: userSchema.CreateUserDto): Promise<SafeUser> {
+    this.setStatus(201);
+    return this.service.create(body);
+  }
+
+  @Patch("{id}")
+  async update(
+    @Path() id: number,
+    @Body() body: userSchema.UpdateUserDto
+  ): Promise<SafeUser> {
+    return this.service.update(id, body);
+  }
+
+  @Delete("{id}")
+  @SuccessResponse(204, "Deleted")
+  async softDelete(@Path() id: number): Promise<void> {
+    this.setStatus(204);
+    return this.service.softDelete(id);
+  }
+}
