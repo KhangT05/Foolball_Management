@@ -13,7 +13,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: football_management
+        working-directory: FOOTBALL_MANAGEMENT
     strategy:
       matrix:
         node-version: [20]
@@ -30,11 +30,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: npm
-        cache-dependency-path: football_management/api/package-lock.json
+        cache-dependency-path: FOOTBALL_MANAGEMENT/api/package-lock.json
 
     - name: Install DI
       run: npm ci
-      working-directory: football_management/api
+      working-directory: FOOTBALL_MANAGEMENT/api
     
     - name: LINT
       run: npm run lint
