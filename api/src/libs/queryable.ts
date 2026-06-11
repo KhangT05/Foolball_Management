@@ -1,6 +1,3 @@
-// src/lib/queryable.ts
-import { Prisma, PrismaClient } from "@prisma/client";
-
 // ─── Core Types ───────────────────────────────────────────────────────────────
 
 export type SortDir = "asc" | "desc";
