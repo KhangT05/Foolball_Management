@@ -231,6 +231,154 @@
 			},
 			"UpdateRoleDto": {
 				"$ref": "#/components/schemas/infer_typeofupdateRoleSchema_"
+			},
+			"TokenResponseDto": {
+				"properties": {
+					"accessToken": {
+						"type": "string"
+					},
+					"tokenType": {
+						"type": "string",
+						"enum": [
+							"Bearer"
+						],
+						"nullable": false
+					},
+					"expiresIn": {
+						"type": "number",
+						"format": "double"
+					},
+					"csrfToken": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"accessToken",
+					"tokenType",
+					"expiresIn",
+					"csrfToken"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ApiResponseShape_TokenResponseDto_": {
+				"properties": {
+					"status": {
+						"type": "boolean"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/TokenResponseDto"
+							}
+						],
+						"nullable": true
+					},
+					"timestamp": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"status",
+					"message",
+					"data",
+					"timestamp"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"infer_typeofLoginSchema_": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"password"
+				],
+				"type": "object"
+			},
+			"LoginDto": {
+				"$ref": "#/components/schemas/infer_typeofLoginSchema_"
+			},
+			"infer_typeofRegisterSchema_": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"email",
+					"password"
+				],
+				"type": "object"
+			},
+			"RegisterDto": {
+				"$ref": "#/components/schemas/infer_typeofRegisterSchema_"
+			},
+			"UserPayload": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"email"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ApiResponseShape_UserPayload_": {
+				"properties": {
+					"status": {
+						"type": "boolean"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/UserPayload"
+							}
+						],
+						"nullable": true
+					},
+					"timestamp": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"status",
+					"message",
+					"data",
+					"timestamp"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -588,6 +736,146 @@
 						}
 					}
 				]
+			}
+		},
+		"/auth/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponseShape_TokenResponseDto_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LoginDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/register": {
+			"post": {
+				"operationId": "Register",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponseShape_TokenResponseDto_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/RegisterDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/refresh": {
+			"post": {
+				"operationId": "Refresh",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponseShape_TokenResponseDto_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "header",
+						"name": "x-csrf-token",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/auth/logout": {
+			"post": {
+				"operationId": "Logout",
+				"responses": {
+					"204": {
+						"description": "No Content"
+					}
+				},
+				"tags": [
+					"Auth"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/auth/me": {
+			"get": {
+				"operationId": "Me",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponseShape_UserPayload_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Auth"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
 			}
 		}
 	},

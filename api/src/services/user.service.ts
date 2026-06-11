@@ -1,28 +1,29 @@
 import { CreateUserDto, UpdateUserDto } from "../dtos/user.schema.js";
-import { PrismaClient, User } from "../generated/prisma/client.js";
+import { User } from "../generated/prisma/client.js";
 import bcrypt from "bcrypt";
+import prisma from "../libs/prisma.js";
 
 export type SafeUser = Omit<User, "password">;
 
 export class UserService {
-    constructor(private readonly db: PrismaClient) { }
+    constructor() { }
 
     findAll(): Promise<SafeUser[]> {
-        return this.db.user.findMany({
+        return prisma.user.findMany({
             where: { is_active: true },
             omit: { password: true },
         });
     }
 
     findById(id: number): Promise<SafeUser | null> {
-        return this.db.user.findUnique({
+        return prisma.user.findUnique({
             where: { id },
             omit: { password: true },
         });
     }
 
     async findByIdOrFail(id: number): Promise<SafeUser> {
-        const user = await this.db.user.findUnique({
+        const user = await prisma.user.findUnique({
             where: { id },
             omit: { password: true },
         });
@@ -31,14 +32,14 @@ export class UserService {
     }
 
     findByEmail(email: string): Promise<User | null> {
-        return this.db.user.findUnique({ where: { email } });
+        return prisma.user.findUnique({ where: { email } });
     }
 
     async create(data: CreateUserDto): Promise<SafeUser> {
         const existing = await this.findByEmail(data.email);
         if (existing) throw new Error("Email đã tồn tại.");
         const hashed = await bcrypt.hash(data.password, 10);
-        return this.db.user.create({
+        return prisma.user.create({
             data: {
                 ...data,
                 password: hashed,
@@ -51,7 +52,7 @@ export class UserService {
         const clean = Object.fromEntries(
             Object.entries(data).filter(([, v]) => v !== undefined)
         );
-        return this.db.user.update({
+        return prisma.user.update({
             where: { id },
             data: clean,
             omit: { password: true },
@@ -59,7 +60,7 @@ export class UserService {
     }
 
     async softDelete(id: number): Promise<void> {
-        await this.db.user.update({
+        await prisma.user.update({
             where: { id },
             data: { is_active: false },
         });

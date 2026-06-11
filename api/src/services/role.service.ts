@@ -1,13 +1,14 @@
 import { CreateRoleDto, UpdateRoleDto } from "../dtos/role.schema.js";
-import { PrismaClient, Role } from "../generated/prisma/client.js";
+import { Role } from "../generated/prisma/client.js";
+import prisma from "../libs/prisma.js";
 import { PaginatedResult, Queryable, QueryRequest } from "../libs/queryable.js";
 
 export class RoleService {
 
     private readonly query: Queryable<Role>;
 
-    constructor(private readonly db: PrismaClient) {
-        this.query = new Queryable<Role>(this.db.role, {
+    constructor() {
+        this.query = new Queryable<Role>(prisma.role, {
             searchFields: ["name", "description"],
             sortable: ["id", "name", "created_at"],
             defaultSort: { column: "id", direction: "asc" },
@@ -25,13 +26,13 @@ export class RoleService {
     }
 
     findById(id: number): Promise<Role | null> {
-        return this.db.role.findUnique({
+        return prisma.role.findUnique({
             where: { id },
         });
     }
 
     async findByIdOrFail(id: number): Promise<Role> {
-        const role = await this.db.role.findUnique({
+        const role = await prisma.role.findUnique({
             where: { id },
         });
         if (!role) throw new Error(`Role ${id} not found`);
@@ -39,14 +40,14 @@ export class RoleService {
     }
 
     async create(data: CreateRoleDto): Promise<Role> {
-        return this.db.role.create({
+        return prisma.role.create({
             data: data
         });
     }
 
     async update(id: number, data: UpdateRoleDto): Promise<Role> {
         await this.findByIdOrFail(id);
-        return this.db.role.update({
+        return prisma.role.update({
             where: { id },
             data,
         });
@@ -54,7 +55,7 @@ export class RoleService {
 
     async softDelete(id: number): Promise<void> {
         await this.findByIdOrFail(id);
-        await this.db.role.update({
+        await prisma.role.update({
             where: { id },
             data: { is_active: false },
         });
