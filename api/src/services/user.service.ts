@@ -38,6 +38,7 @@ export class UserService {
     }
 
     async create(data: CreateUserDto): Promise<SafeUser> {
+
         const existing = await this.findByEmail(data.email);
         if (existing) throw new Error("Email đã tồn tại.");
         const hashed = await bcrypt.hash(data.password, 10);
@@ -45,6 +46,7 @@ export class UserService {
             data: {
                 ...data,
                 password: hashed,
+
             },
             omit: { password: true },
         });
