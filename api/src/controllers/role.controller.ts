@@ -1,9 +1,10 @@
-import { Controller, Get, Path, Tags, Route, Post, Patch, Body, SuccessResponse, Delete, Query } from "tsoa";
+import { Controller, Get, Path, Tags, Route, Post, Patch, Body, SuccessResponse, Delete, Query, Security } from "tsoa";
 import { RoleService } from "../services/role.service.js";
 import type { Role } from "../generated/prisma/client.js";
 import { type CreateRoleDto, type UpdateRoleDto } from "../dtos/role.schema.js";
 import { PaginatedResult, QueryRequest } from "../libs/queryable.js";
 
+@Security("api")
 @Route("roles")
 @Tags("Roles")
 export class RoleController extends Controller {

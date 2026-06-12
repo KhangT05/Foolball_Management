@@ -1,31 +1,46 @@
 import { CreateUserDto, UpdateUserDto } from "../dtos/user.schema.js";
 import { PrismaClient, User } from "../generated/prisma/client.js";
 import bcrypt from "bcrypt";
-import prisma from "../libs/prisma.js";
+import { PaginatedResult, Queryable, QueryRequest } from "../libs/queryable.js";
 
 export type SafeUser = Omit<User, "password">;
 
 export class UserService {
+
+    private readonly query: Queryable<SafeUser>;
+
     constructor(
         private readonly prisma: PrismaClient
-    ) { }
-
-    findAll(): Promise<SafeUser[]> {
-        return prisma.user.findMany({
-            where: { is_active: true },
-            omit: { password: true },
+    ) {
+        this.query = new Queryable<SafeUser>(prisma.user, {
+            searchFields: ["name", "description"],
+            sortable: ["id", "name", "created_at"],
+            defaultSort: { column: "id", direction: "asc" },
+            filterable: ["is_active"],
+            defaultPerPage: 20,
+            maxPerPage: 100,
+            beforeBuild: (where) => {
+                where.push({ is_active: true });
+            },
         });
     }
 
+    findAll(req: QueryRequest = {}): Promise<PaginatedResult<SafeUser>> {
+        // return this.prisma.user.findMany({
+        //     where: { is_active: true },
+        //     omit: { password: true },
+        // });
+        return this.query.run(req);
+    }
     findById(id: number): Promise<SafeUser | null> {
-        return prisma.user.findUnique({
+        return this.prisma.user.findUnique({
             where: { id },
             omit: { password: true },
         });
     }
 
     async findByIdOrFail(id: number): Promise<SafeUser> {
-        const user = await prisma.user.findUnique({
+        const user = await this.prisma.user.findUnique({
             where: { id },
             omit: { password: true },
         });
@@ -34,7 +49,7 @@ export class UserService {
     }
 
     findByEmail(email: string): Promise<User | null> {
-        return prisma.user.findUnique({ where: { email } });
+        return this.prisma.user.findUnique({ where: { email } });
     }
 
     async create(data: CreateUserDto): Promise<SafeUser> {
@@ -42,7 +57,7 @@ export class UserService {
         const existing = await this.findByEmail(data.email);
         if (existing) throw new Error("Email đã tồn tại.");
         const hashed = await bcrypt.hash(data.password, 10);
-        return prisma.user.create({
+        return this.prisma.user.create({
             data: {
                 ...data,
                 password: hashed,
@@ -56,7 +71,7 @@ export class UserService {
         const clean = Object.fromEntries(
             Object.entries(data).filter(([, v]) => v !== undefined)
         );
-        return prisma.user.update({
+        return this.prisma.user.update({
             where: { id },
             data: clean,
             omit: { password: true },
@@ -64,7 +79,7 @@ export class UserService {
     }
 
     async softDelete(id: number): Promise<void> {
-        await prisma.user.update({
+        await this.prisma.user.update({
             where: { id },
             data: { is_active: false },
         });

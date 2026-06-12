@@ -1,7 +1,9 @@
-import { Controller, Get, Path, Tags, Route, Post, Patch, Body, SuccessResponse, Delete } from "tsoa";
-import { UserService, SafeUser } from "../services/user.service.js";
-import * as userSchema from "../dtos/user.schema.js";
+import { Controller, Get, Path, Tags, Route, Post, Patch, Body, SuccessResponse, Delete, Query, Security } from "tsoa";
+import { UserService, type SafeUser } from "../services/user.service.js";
+import { type CreateUserDto, type UpdateUserDto } from "../dtos/user.schema.js";
+import { PaginatedResult, QueryRequest } from "../libs/queryable.js";
 
+// @Security("api")
 @Route("users")
 @Tags("Users")
 export class UserController extends Controller {
@@ -10,8 +12,14 @@ export class UserController extends Controller {
   }
 
   @Get("/")
-  async findAll(): Promise<SafeUser[]> {
-    return this.service.findAll();
+  async findAll(
+    @Query() page = 1,
+    @Query() per_page = 20,
+    @Query() q?: string,
+    @Query() sort?: string,
+    @Query() direction?: "asc" | "desc"
+  ): Promise<PaginatedResult<SafeUser>> {
+    return this.service.findAll({ page, per_page, q, sort, direction });
   }
 
   @Get("{id}")
@@ -21,7 +29,7 @@ export class UserController extends Controller {
 
   @Post("/")
   @SuccessResponse(201, "Created")
-  async create(@Body() body: userSchema.CreateUserDto): Promise<SafeUser> {
+  async create(@Body() body: CreateUserDto): Promise<SafeUser> {
     this.setStatus(201);
     return this.service.create(body);
   }
@@ -29,7 +37,7 @@ export class UserController extends Controller {
   @Patch("{id}")
   async update(
     @Path() id: number,
-    @Body() body: userSchema.UpdateUserDto
+    @Body() body: UpdateUserDto
   ): Promise<SafeUser> {
     return this.service.update(id, body);
   }

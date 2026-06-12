@@ -62,6 +62,57 @@
             "SafeUser": {
                 "$ref": "#/components/schemas/Omit_User.password_"
             },
+            "PaginationMeta": {
+                "properties": {
+                    "total": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "page": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "per_page": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "last_page": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "has_next": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "total",
+                    "page",
+                    "per_page",
+                    "last_page",
+                    "has_next"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "PaginatedResult_SafeUser_": {
+                "properties": {
+                    "data": {
+                        "items": {
+                            "$ref": "#/components/schemas/SafeUser"
+                        },
+                        "type": "array"
+                    },
+                    "meta": {
+                        "$ref": "#/components/schemas/PaginationMeta"
+                    }
+                },
+                "required": [
+                    "data",
+                    "meta"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
             "infer_typeofcreateUserSchema_": {
                 "properties": {
                     "phone": {
@@ -104,6 +155,249 @@
             },
             "UpdateUserDto": {
                 "$ref": "#/components/schemas/infer_typeofupdateUserSchema_"
+            },
+            "DefaultSelection__36_RolePayload_": {
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "is_active": {
+                        "type": "boolean"
+                    },
+                    "id": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "description",
+                    "updated_at",
+                    "created_at",
+                    "is_active",
+                    "id",
+                    "name"
+                ],
+                "type": "object"
+            },
+            "RoleModel": {
+                "$ref": "#/components/schemas/DefaultSelection__36_RolePayload_",
+                "description": "Model Role"
+            },
+            "Role": {
+                "$ref": "#/components/schemas/RoleModel",
+                "description": "Model Role"
+            },
+            "PaginatedResult_Role_": {
+                "properties": {
+                    "data": {
+                        "items": {
+                            "$ref": "#/components/schemas/Role"
+                        },
+                        "type": "array"
+                    },
+                    "meta": {
+                        "$ref": "#/components/schemas/PaginationMeta"
+                    }
+                },
+                "required": [
+                    "data",
+                    "meta"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "infer_typeofcreateRoleSchema_": {
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name"
+                ],
+                "type": "object"
+            },
+            "CreateRoleDto": {
+                "$ref": "#/components/schemas/infer_typeofcreateRoleSchema_"
+            },
+            "infer_typeofupdateRoleSchema_": {
+                "properties": {
+                    "is_active": {
+                        "type": "boolean"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateRoleDto": {
+                "$ref": "#/components/schemas/infer_typeofupdateRoleSchema_"
+            },
+            "TokenResponseDto": {
+                "properties": {
+                    "accessToken": {
+                        "type": "string"
+                    },
+                    "tokenType": {
+                        "type": "string",
+                        "enum": [
+                            "Bearer"
+                        ],
+                        "nullable": false
+                    },
+                    "expiresIn": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "csrfToken": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "accessToken",
+                    "tokenType",
+                    "expiresIn",
+                    "csrfToken"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "ApiResponseShape_TokenResponseDto_": {
+                "properties": {
+                    "status": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/TokenResponseDto"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "timestamp": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "status",
+                    "message",
+                    "data",
+                    "timestamp"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "infer_typeofLoginSchema_": {
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "type": "object"
+            },
+            "LoginDto": {
+                "$ref": "#/components/schemas/infer_typeofLoginSchema_"
+            },
+            "infer_typeofRegisterSchema_": {
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "email",
+                    "password"
+                ],
+                "type": "object"
+            },
+            "RegisterDto": {
+                "$ref": "#/components/schemas/infer_typeofRegisterSchema_"
+            },
+            "UserPayload": {
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "email"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "ApiResponseShape_UserPayload_": {
+                "properties": {
+                    "status": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/UserPayload"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "timestamp": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "status",
+                    "message",
+                    "data",
+                    "timestamp"
+                ],
+                "type": "object",
+                "additionalProperties": false
             }
         },
         "securitySchemes": {}
@@ -126,10 +420,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "items": {
-                                        "$ref": "#/components/schemas/SafeUser"
-                                    },
-                                    "type": "array"
+                                    "$ref": "#/components/schemas/PaginatedResult_SafeUser_"
                                 }
                             }
                         }
@@ -139,7 +430,56 @@
                     "Users"
                 ],
                 "security": [],
-                "parameters": []
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "default": 1,
+                            "format": "double",
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "per_page",
+                        "required": false,
+                        "schema": {
+                            "default": 20,
+                            "format": "double",
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "q",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "sort",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "direction",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    }
+                ]
             },
             "post": {
                 "operationId": "Create",
@@ -265,6 +605,362 @@
                         }
                     }
                 ]
+            }
+        },
+        "/roles": {
+            "get": {
+                "operationId": "FindAll",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedResult_Role_"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Roles"
+                ],
+                "security": [
+                    {
+                        "api": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "default": 1,
+                            "format": "double",
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "per_page",
+                        "required": false,
+                        "schema": {
+                            "default": 20,
+                            "format": "double",
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "q",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "sort",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "direction",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "post": {
+                "operationId": "Create",
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Role"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Roles"
+                ],
+                "security": [
+                    {
+                        "api": []
+                    }
+                ],
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateRoleDto"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/roles/{id}": {
+            "get": {
+                "operationId": "FindById",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Role"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Roles"
+                ],
+                "security": [
+                    {
+                        "api": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "format": "double",
+                            "type": "number"
+                        }
+                    }
+                ]
+            },
+            "patch": {
+                "operationId": "Update",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Role"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Roles"
+                ],
+                "security": [
+                    {
+                        "api": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "format": "double",
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateRoleDto"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "SoftDelete",
+                "responses": {
+                    "204": {
+                        "description": "Deleted"
+                    }
+                },
+                "tags": [
+                    "Roles"
+                ],
+                "security": [
+                    {
+                        "api": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "format": "double",
+                            "type": "number"
+                        }
+                    }
+                ]
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "operationId": "Login",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponseShape_TokenResponseDto_"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Auth"
+                ],
+                "security": [],
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginDto"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "operationId": "Register",
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponseShape_TokenResponseDto_"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Auth"
+                ],
+                "security": [],
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterDto"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/refresh": {
+            "post": {
+                "operationId": "Refresh",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponseShape_TokenResponseDto_"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Auth"
+                ],
+                "security": [],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-csrf-token",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "operationId": "Logout",
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                },
+                "tags": [
+                    "Auth"
+                ],
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ],
+                "parameters": []
+            }
+        },
+        "/auth/me": {
+            "get": {
+                "operationId": "Me",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponseShape_UserPayload_"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Auth"
+                ],
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ],
+                "parameters": []
             }
         }
     },

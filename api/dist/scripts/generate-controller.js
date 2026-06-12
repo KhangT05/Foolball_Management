@@ -49,16 +49,16 @@ function pluralize(word) {
 // ─── Args ─────────────────────────────────────────────────────────────────────
 const [, , entityNameArg, ...flags] = process.argv;
 if (!entityNameArg) {
-    console.error("Usage: tsx scripts/generate-controller.ts <EntityName> [--no-delete] [--readonly] [--auth] [--paginate] [--force]");
+    console.error("Usage: tsx scripts/generate-controller.ts <EntityName> [--no-delete] [--readonly] [--auth] [--paginate] [--force] [--queryable]");
     process.exit(1);
 }
 const entityName = entityNameArg.charAt(0).toUpperCase() + entityNameArg.slice(1);
 const noDelete = flags.includes("--no-delete");
 const readonly = flags.includes("--readonly");
 const auth = flags.includes("--auth");
-const paginate = flags.includes("--paginate");
 const force = flags.includes("--force");
 const queryable = flags.includes("--queryable");
+const paginate = !queryable && flags.includes("--paginate");
 const entityLower = entityName.toLowerCase();
 const routePath = pluralize(entityLower);
 // ─── Validate prerequisites ───────────────────────────────────────────────────
@@ -100,19 +100,16 @@ if (!readonly) {
         console.warn(`  WARN   Update${entityName}Dto not found in ${schemaPath}`);
     }
 }
-// Detect if service has paginate signature
-const hasPaginateInService = serviceContent.includes("PaginationOpts") ||
-    serviceContent.includes("page:") ||
-    serviceContent.includes("{ page,");
 // ─── Controller template ──────────────────────────────────────────────────────
 function controllerTemplate() {
-    const usePaginate = paginate || queryable;
+    // queryable đã có pagination built-in → usePaginate chỉ cho standalone --paginate
+    const needsPaginatedResult = queryable || paginate;
     const tsoaImports = ["Controller", "Get", "Path", "Tags", "Route"];
     if (!readonly)
         tsoaImports.push("Post", "Patch", "Body", "SuccessResponse");
     if (!readonly && !noDelete)
         tsoaImports.push("Delete");
-    if (usePaginate)
+    if (queryable || paginate)
         tsoaImports.push("Query");
     if (auth)
         tsoaImports.push("Security");
@@ -135,15 +132,15 @@ function controllerTemplate() {
     if (!readonly) {
         lines.push(`import { type Create${entityName}Dto, type Update${entityName}Dto } from "../dtos/${entityLower}.schema.js";`);
     }
-    if (usePaginate) {
-        lines.push(`import type { PaginatedResult } from ${paginatedImportPath};`);
-    }
     if (queryable) {
-        lines.push(`import type { QueryRequest } from "../lib/queryable.js";`);
+        lines.push(`import { PaginatedResult, QueryRequest } from "../libs/queryable.js";`);
+    }
+    else if (paginate) {
+        lines.push(`import { PaginatedResult } from "../types/pagination.js";`);
     }
     lines.push(``);
     if (auth)
-        lines.push(`@Security("jwt")`);
+        lines.push(`@Security("api")`);
     lines.push(`@Route("${routePath}")`);
     lines.push(`@Tags("${entityName}s")`);
     lines.push(`export class ${entityName}Controller extends Controller {`);

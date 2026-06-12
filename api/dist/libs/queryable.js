@@ -1,3 +1,4 @@
+// ─── Core Types ───────────────────────────────────────────────────────────────
 // ─── Builder ──────────────────────────────────────────────────────────────────
 class QueryBuilder {
     config;
@@ -127,8 +128,15 @@ class QueryBuilder {
  * Trả về hàm `query()` gắn vào service.
  * Gọi 1 lần khi khởi tạo service, dùng lại cho mọi request.
  */
-export function createQueryable(delegate, config) {
-    return async (req) => {
+export class Queryable {
+    delegate;
+    baseConfig;
+    constructor(delegate, baseConfig) {
+        this.delegate = delegate;
+        this.baseConfig = baseConfig;
+    }
+    async run(req, overrideConfig) {
+        const config = overrideConfig ? { ...this.baseConfig, ...overrideConfig } : this.baseConfig;
         const builder = new QueryBuilder(config);
         const args = builder
             .applySimpleFilter(req)
@@ -143,12 +151,12 @@ export function createQueryable(delegate, config) {
             ...(config.select && { select: config.select }),
         };
         const [raw, total] = await Promise.all([
-            delegate.findMany(queryArgs),
-            delegate.count({ where: args.where }),
+            this.delegate.findMany(queryArgs),
+            this.delegate.count({ where: args.where }),
         ]);
         const data = config.afterFetch ? config.afterFetch(raw) : raw;
         return { data, meta: builder.buildMeta(total) };
-    };
+    }
 }
 // ─── Utils ────────────────────────────────────────────────────────────────────
 function toArray(value) {

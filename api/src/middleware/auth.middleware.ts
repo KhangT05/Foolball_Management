@@ -45,3 +45,19 @@ export const originGuard = (req: Request, res: Response, next: NextFunction) => 
     }
     next();
 };
+export async function expressAuthentication(
+    req: Request,
+    securityName: string,
+    _scopes?: string[]
+): Promise<{ user_id: number }> {
+    if (securityName === "api") {
+        const authHeader = req.headers.authorization;
+        if (!authHeader?.startsWith("Bearer ")) {
+            throw Object.assign(new Error("Missing access token"), { status: 401 });
+        }
+        const token = authHeader.slice(7);
+        const payload = verifyAccessToken(token); // throws nếu invalid
+        return { user_id: payload.sub };
+    }
+    throw Object.assign(new Error("Unknown security scheme"), { status: 401 });
+}

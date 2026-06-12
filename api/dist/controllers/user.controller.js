@@ -10,17 +10,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-import { Controller, Get, Path, Tags, Route, Post, Patch, Body, SuccessResponse, Delete } from "tsoa";
+import { Controller, Get, Path, Tags, Route, Post, Patch, Body, SuccessResponse, Delete, Query } from "tsoa";
 import { UserService } from "../services/user.service.js";
-import * as userSchema from "../dtos/user.schema.js";
+// @Security("api")
 let UserController = class UserController extends Controller {
     service;
     constructor(service) {
         super();
         this.service = service;
     }
-    async findAll() {
-        return this.service.findAll();
+    async findAll(page = 1, per_page = 20, q, sort, direction) {
+        return this.service.findAll({ page, per_page, q, sort, direction });
     }
     async findById(id) {
         return this.service.findByIdOrFail(id);
@@ -39,8 +39,13 @@ let UserController = class UserController extends Controller {
 };
 __decorate([
     Get("/"),
+    __param(0, Query()),
+    __param(1, Query()),
+    __param(2, Query()),
+    __param(3, Query()),
+    __param(4, Query()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object, Object, String, String, String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "findAll", null);
 __decorate([

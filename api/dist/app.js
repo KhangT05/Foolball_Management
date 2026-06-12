@@ -9,11 +9,17 @@ import swaggerUi from "swagger-ui-express";
 import { RegisterRoutes } from "./generated/routes.js";
 import swaggerOutput from "./generated/swagger.json" with { type: "json" };
 import { errorMiddleware } from "./middleware/error.middleware.js";
+import cookieParser from "cookie-parser";
+import { connectRedis } from "./libs/redis.js";
 const app = express();
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+    origin: process.env.APP_ORIGIN ?? "http://localhost:3000",
+    credentials: true
+}));
 app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(express.json());
+app.use(cookieParser());
 app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerOutput));
 const router = express.Router();
 RegisterRoutes(router);
@@ -21,6 +27,7 @@ app.use("/api/v1/", router);
 app.use(errorMiddleware);
 const PORT = process.env.PORT ?? 3000;
 async function bootstrap() {
+    await connectRedis();
     await prisma.$connect();
     app.listen(PORT, () => {
         console.log(`[App]  localhost:${PORT} (${process.env.NODE_ENV})`);

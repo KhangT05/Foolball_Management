@@ -1,10 +1,11 @@
 import { CreateRoleDto, UpdateRoleDto } from "../dtos/role.schema.js";
 import { PrismaClient, Role } from "../generated/prisma/client.js";
+import { PaginatedResult, QueryRequest } from "../libs/queryable.js";
 export declare class RoleService {
-    private readonly db;
+    private readonly prisma;
     private readonly query;
-    constructor(db: PrismaClient);
-    findAll(): Promise<Role[]>;
+    constructor(prisma: PrismaClient);
+    findAll(req?: QueryRequest): Promise<PaginatedResult<Role>>;
     findById(id: number): Promise<Role | null>;
     findByIdOrFail(id: number): Promise<Role>;
     create(data: CreateRoleDto): Promise<Role>;

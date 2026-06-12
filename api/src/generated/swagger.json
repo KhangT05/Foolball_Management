@@ -62,6 +62,57 @@
 			"SafeUser": {
 				"$ref": "#/components/schemas/Omit_User.password_"
 			},
+			"PaginationMeta": {
+				"properties": {
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"page": {
+						"type": "number",
+						"format": "double"
+					},
+					"per_page": {
+						"type": "number",
+						"format": "double"
+					},
+					"last_page": {
+						"type": "number",
+						"format": "double"
+					},
+					"has_next": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"total",
+					"page",
+					"per_page",
+					"last_page",
+					"has_next"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PaginatedResult_SafeUser_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/SafeUser"
+						},
+						"type": "array"
+					},
+					"meta": {
+						"$ref": "#/components/schemas/PaginationMeta"
+					}
+				},
+				"required": [
+					"data",
+					"meta"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"infer_typeofcreateUserSchema_": {
 				"properties": {
 					"phone": {
@@ -146,38 +197,6 @@
 			"Role": {
 				"$ref": "#/components/schemas/RoleModel",
 				"description": "Model Role"
-			},
-			"PaginationMeta": {
-				"properties": {
-					"total": {
-						"type": "number",
-						"format": "double"
-					},
-					"page": {
-						"type": "number",
-						"format": "double"
-					},
-					"per_page": {
-						"type": "number",
-						"format": "double"
-					},
-					"last_page": {
-						"type": "number",
-						"format": "double"
-					},
-					"has_next": {
-						"type": "boolean"
-					}
-				},
-				"required": [
-					"total",
-					"page",
-					"per_page",
-					"last_page",
-					"has_next"
-				],
-				"type": "object",
-				"additionalProperties": false
 			},
 			"PaginatedResult_Role_": {
 				"properties": {
@@ -401,10 +420,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/SafeUser"
-									},
-									"type": "array"
+									"$ref": "#/components/schemas/PaginatedResult_SafeUser_"
 								}
 							}
 						}
@@ -414,7 +430,56 @@
 					"Users"
 				],
 				"security": [],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"default": 1,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "per_page",
+						"required": false,
+						"schema": {
+							"default": 20,
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "q",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "sort",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "direction",
+						"required": false,
+						"schema": {
+							"type": "string",
+							"enum": [
+								"asc",
+								"desc"
+							]
+						}
+					}
+				]
 			},
 			"post": {
 				"operationId": "Create",
@@ -560,7 +625,11 @@
 				"tags": [
 					"Roles"
 				],
-				"security": [],
+				"security": [
+					{
+						"api": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "query",
@@ -629,7 +698,11 @@
 				"tags": [
 					"Roles"
 				],
-				"security": [],
+				"security": [
+					{
+						"api": []
+					}
+				],
 				"parameters": [],
 				"requestBody": {
 					"required": true,
@@ -661,7 +734,11 @@
 				"tags": [
 					"Roles"
 				],
-				"security": [],
+				"security": [
+					{
+						"api": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -691,7 +768,11 @@
 				"tags": [
 					"Roles"
 				],
-				"security": [],
+				"security": [
+					{
+						"api": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -724,7 +805,11 @@
 				"tags": [
 					"Roles"
 				],
-				"security": [],
+				"security": [
+					{
+						"api": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",

@@ -1,10 +1,10 @@
-import { createQueryable } from "../libs/queryable.js";
+import { Queryable } from "../libs/queryable.js";
 export class RoleService {
-    db;
+    prisma;
     query;
-    constructor(db) {
-        this.db = db;
-        this.query = createQueryable(this.db.role, {
+    constructor(prisma) {
+        this.prisma = prisma;
+        this.query = new Queryable(prisma.role, {
             searchFields: ["name", "description"],
             sortable: ["id", "name", "created_at"],
             defaultSort: { column: "id", direction: "asc" },
@@ -16,18 +16,16 @@ export class RoleService {
             },
         });
     }
-    findAll() {
-        return this.db.role.findMany({
-            where: { is_active: true },
-        });
+    findAll(req = {}) {
+        return this.query.run(req);
     }
     findById(id) {
-        return this.db.role.findUnique({
+        return this.prisma.role.findUnique({
             where: { id },
         });
     }
     async findByIdOrFail(id) {
-        const role = await this.db.role.findUnique({
+        const role = await this.prisma.role.findUnique({
             where: { id },
         });
         if (!role)
@@ -35,22 +33,20 @@ export class RoleService {
         return role;
     }
     async create(data) {
-        return this.db.role.create({
-            data: {
-                ...data,
-            },
+        return this.prisma.role.create({
+            data: data
         });
     }
     async update(id, data) {
         await this.findByIdOrFail(id);
-        return this.db.role.update({
+        return this.prisma.role.update({
             where: { id },
-            data: { ...data },
+            data,
         });
     }
     async softDelete(id) {
         await this.findByIdOrFail(id);
-        await this.db.role.update({
+        await this.prisma.role.update({
             where: { id },
             data: { is_active: false },
         });

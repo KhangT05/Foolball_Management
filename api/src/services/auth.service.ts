@@ -15,7 +15,7 @@ export class AuthService {
 
     }
     async login(dto: LoginDto): Promise<AuthTokens> {
-        const user = await prisma.user.findUnique({ where: { email: dto.email } }).catch(() => {
+        const user = await this.prisma.user.findUnique({ where: { email: dto.email } }).catch(() => {
             throw createAppError('UNAUTHORIZED');
         });
 
@@ -36,7 +36,7 @@ export class AuthService {
     }
 
     async register(dto: RegisterDto): Promise<AuthTokens> {
-        const exists = await prisma.user.findUnique({ where: { email: dto.email } }).catch(() => {
+        const exists = await this.prisma.user.findUnique({ where: { email: dto.email } }).catch(() => {
             throw createAppError('UNAUTHORIZED');
         });
 
@@ -45,7 +45,7 @@ export class AuthService {
         }
 
         const hashed = await bcrypt.hash(dto.password, 12);
-        const user = await prisma.user.create({
+        const user = await this.prisma.user.create({
             data: { email: dto.email, password: hashed, name: dto.name },
         }).catch((err) => {
             if (err?.code === 'P2002') {
@@ -80,11 +80,11 @@ export class AuthService {
     }
 
     async getMe(user_id: number): Promise<UserPayload> {
-        const user = await prisma.user.findUnique({
+        const user = await this.prisma.user.findUnique({
             where: { id: user_id },
             select: { id: true, name: true, email: true },
         }).catch(() => {
-            throw createAppError('UNAUTHORIZED', `prisma.user.findUnique failed for user_id: ${user_id}`);
+            throw createAppError('UNAUTHORIZED', `this.prisma.user.findUnique failed for user_id: ${user_id}`);
         });
 
         if (!user) throw createAppError('NOT_FOUND', `User not found: ${user_id}`);

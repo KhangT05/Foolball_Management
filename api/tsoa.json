@@ -5,6 +5,15 @@
         "src/controllers/*.ts"
     ],
     "spec": {
+        "components": {
+            "securitySchemes": {
+                "api": {
+                    "type": "http",
+                    "scheme": "bearer",
+                    "bearerFormat": "JWT"
+                }
+            }
+        },
         "outputDirectory": "src/generated",
         "specVersion": 3,
         "basePath": "/api/v1/",
@@ -16,6 +25,7 @@
     "routes": {
         "routesDir": "src/generated",
         "iocModule": "src/libs/ioc",
-        "esm": true
+        "esm": true,
+        "authenticationModule": "./src/middleware/auth.middleware.ts"
     }
 }

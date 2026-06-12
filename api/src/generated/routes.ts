@@ -9,10 +9,13 @@ import { UserController } from './../controllers/user.controller.js';
 import { RoleController } from './../controllers/role.controller.js';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AuthController } from './../controllers/auth.controller.js';
+import { expressAuthentication } from './../middleware/auth.middleware.js';
+// @ts-ignore - no great way to install types from subpackage
 import { iocContainer } from './../libs/ioc.js';
 import type { IocContainer, IocContainerFactory } from '@tsoa/runtime';
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
 
+const expressAuthenticationRecasted = expressAuthentication as (req: ExRequest, securityName: string, scopes?: string[], res?: ExResponse) => Promise<any>;
 
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -31,6 +34,27 @@ const models: TsoaRoute.Models = {
     "SafeUser": {
         "dataType": "refAlias",
         "type": {"ref":"Omit_User.password_","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PaginationMeta": {
+        "dataType": "refObject",
+        "properties": {
+            "total": {"dataType":"double","required":true},
+            "page": {"dataType":"double","required":true},
+            "per_page": {"dataType":"double","required":true},
+            "last_page": {"dataType":"double","required":true},
+            "has_next": {"dataType":"boolean","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PaginatedResult_SafeUser_": {
+        "dataType": "refObject",
+        "properties": {
+            "data": {"dataType":"array","array":{"dataType":"refAlias","ref":"SafeUser"},"required":true},
+            "meta": {"ref":"PaginationMeta","required":true},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "infer_typeofcreateUserSchema_": {
@@ -66,18 +90,6 @@ const models: TsoaRoute.Models = {
     "Role": {
         "dataType": "refAlias",
         "type": {"ref":"RoleModel","validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "PaginationMeta": {
-        "dataType": "refObject",
-        "properties": {
-            "total": {"dataType":"double","required":true},
-            "page": {"dataType":"double","required":true},
-            "per_page": {"dataType":"double","required":true},
-            "last_page": {"dataType":"double","required":true},
-            "has_next": {"dataType":"boolean","required":true},
-        },
-        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "PaginatedResult_Role_": {
@@ -190,6 +202,11 @@ export function RegisterRoutes(app: Router) {
 
     
         const argsUserController_findAll: Record<string, TsoaRoute.ParameterSchema> = {
+                page: {"default":1,"in":"query","name":"page","dataType":"double"},
+                per_page: {"default":20,"in":"query","name":"per_page","dataType":"double"},
+                q: {"in":"query","name":"q","dataType":"string"},
+                sort: {"in":"query","name":"sort","dataType":"string"},
+                direction: {"in":"query","name":"direction","dataType":"union","subSchemas":[{"dataType":"enum","enums":["asc"]},{"dataType":"enum","enums":["desc"]}]},
         };
         app.get('/users',
             ...(fetchMiddlewares<RequestHandler>(UserController)),
@@ -372,6 +389,7 @@ export function RegisterRoutes(app: Router) {
                 direction: {"in":"query","name":"direction","dataType":"union","subSchemas":[{"dataType":"enum","enums":["asc"]},{"dataType":"enum","enums":["desc"]}]},
         };
         app.get('/roles',
+            authenticateMiddleware([{"api":[]}]),
             ...(fetchMiddlewares<RequestHandler>(RoleController)),
             ...(fetchMiddlewares<RequestHandler>(RoleController.prototype.findAll)),
 
@@ -407,6 +425,7 @@ export function RegisterRoutes(app: Router) {
                 id: {"in":"path","name":"id","required":true,"dataType":"double"},
         };
         app.get('/roles/:id',
+            authenticateMiddleware([{"api":[]}]),
             ...(fetchMiddlewares<RequestHandler>(RoleController)),
             ...(fetchMiddlewares<RequestHandler>(RoleController.prototype.findById)),
 
@@ -442,6 +461,7 @@ export function RegisterRoutes(app: Router) {
                 body: {"in":"body","name":"body","required":true,"ref":"CreateRoleDto"},
         };
         app.post('/roles',
+            authenticateMiddleware([{"api":[]}]),
             ...(fetchMiddlewares<RequestHandler>(RoleController)),
             ...(fetchMiddlewares<RequestHandler>(RoleController.prototype.create)),
 
@@ -478,6 +498,7 @@ export function RegisterRoutes(app: Router) {
                 body: {"in":"body","name":"body","required":true,"ref":"UpdateRoleDto"},
         };
         app.patch('/roles/:id',
+            authenticateMiddleware([{"api":[]}]),
             ...(fetchMiddlewares<RequestHandler>(RoleController)),
             ...(fetchMiddlewares<RequestHandler>(RoleController.prototype.update)),
 
@@ -513,6 +534,7 @@ export function RegisterRoutes(app: Router) {
                 id: {"in":"path","name":"id","required":true,"dataType":"double"},
         };
         app.delete('/roles/:id',
+            authenticateMiddleware([{"api":[]}]),
             ...(fetchMiddlewares<RequestHandler>(RoleController)),
             ...(fetchMiddlewares<RequestHandler>(RoleController.prototype.softDelete)),
 

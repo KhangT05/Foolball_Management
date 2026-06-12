@@ -1,4 +1,3 @@
-// src/libs/ioc.ts
 import { AuthController } from "../controllers/auth.controller.js";
 import { RoleController } from "../controllers/role.controller.js";
 import { UserController } from "../controllers/user.controller.js";
