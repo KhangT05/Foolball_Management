@@ -51,9 +51,9 @@ services:
       - api
     networks:
       - app_network
-  volumes:
-    mysql_data:
-    redis_data:
-  networks:                                        # MISSING: thiếu block networks ở root level
-    app_network:
-      driver: bridge
+volumes:
+  mysql_data:
+  redis_data:
+networks:                                        # MISSING: thiếu block networks ở root level
+  app_network:
+    driver: bridge
