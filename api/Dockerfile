@@ -3,7 +3,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-RUN npx tsoa spec-and-routes
 RUN npx prisma generate
 RUN npm run build
 
