@@ -6,7 +6,7 @@ on:
     branches: [ "master" ]
 
 env:
-  IMAGE_API: ghcr.io/${{ github.repository_owner  }}/football_management
+  IMAGE_API: ghcr.io/${{ github.repository_owner  }}/Football_Management
 
 jobs:
 
@@ -20,8 +20,6 @@ jobs:
     strategy:
       matrix:
         node-version: [20]
-
-
 
     steps:
 
@@ -92,22 +90,59 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+  # deploy:
+  #   name: Deploy to VPS
+  #   runs-on: ubuntu-latest
+  #   needs: build-push
+  #   steps:
+  #     - name: Deploy via SSH
+  #       uses: appleboy/ssh-action@v1
+  #       with:
+  #         host: ${{ secrets.VPS_HOST }}
+  #         username: ${{ secrets.VPS_USER }}
+  #         key: ${{ secrets.VPS_SSH_KEY }}
+  #         envs: IMAGE_API,GHCR_TOKEN,GHCR_USER
+  #         script: |
+  #           set -e
+  #           cd /opt/Football_Management
+  #           echo "${GHCR_TOKEN}" | docker login ghcr.io -u "${GHCR_USER} --password-stdin
+  #           docker compose pull api
+  #           docker compose up -d --no-build --remove-orphans api
+  #           docker image prune -f
+  #       env:
+  #         GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+  #         GHCR_USER: ${{ secrets.GHCR_USER }}
+  #         IMAGE_API: ${{ env.IMAGE_API }}
   deploy:
     name: Deploy to VPS
     runs-on: ubuntu-latest
     needs: build-push
     steps:
+      - uses: actions/checkout@v4
+
+      - name: COPY COMPOSE FILE
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{secrets.VPS_HOST}}
+          username: ${{secrets.VPS_USER}}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "docker-compose.yml"
+          target: /opt/Football_Management
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          envs: IMAGE_API
+          envs: GHCR_TOKEN,GHCR_USER
           script: |
             set -e
-            cd /opt/football_management
-            echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ secrets.GHCR_USER }} --password-stdin
+            cd /opt/Football_Management
+            echo "${GHCR_TOKEN}" | docker login ghcr.io -u "${GHCR_USER}" --password-stdin
             docker compose pull api
-            docker compose up -d --no-build --remove-orphans api
+            docker compose up -d --no-build --remove-orphans
             docker image prune -f
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
+          GHCR_USER: ${{ github.actor }}

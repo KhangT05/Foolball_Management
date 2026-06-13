@@ -1,27 +1,26 @@
 services:
   api:
-    context: ./api
-    image: ghcr.io/${GITHUB_USERNAME}/football_management:latest
+    build:
+      context: ./api
+    image: ghcr.io/${GITHUB_USERNAME}/Football_Management:latest
     # Khởi động lại nếu bị crash hoặc server reboot
     restart: unless-stopped
     ports: 
       - "3000:3005"
     environment:
       NODE_ENV: production
-      DATABASE_URL: ${MYSQL_ROOT_PASSWORD}
+      DATABASE_URL: ${DATABASE_URL}
       REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
       # Phụ thuộc vào
-      depends_on:                                  # MISSING: không có depends_on mysql/redis
+    depends_on:                                  # MISSING: không có depends_on mysql/redis
         - mysql
         - redis
-      networks:
+    networks:
         - app_network
   mysql:
     image: mysql:8.0
     container_name: api-mysql
     restart: unless-stopped
-    ports:
-      - "3306:3306"
     environment:
     # Đặt mật khẩu cho root
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -33,9 +32,11 @@ services:
   redis:
     image: redis:7-alpine
     restart: unless-stopped
-    command: redis-server --requirepass redispassword
+    command: redis-server --requirepass ${REDIS_PASSWORD}
     volumes:
       - redis_data:/data
+    networks:
+      - app_network
   nginx:
     image: nginx:alpine
     restart: unless-stopped
@@ -50,9 +51,9 @@ services:
       - api
     networks:
       - app_network
-  volumes:
+volumes:
   mysql_data:
   redis_data:
-  networks:                                        # MISSING: thiếu block networks ở root level
+networks:                                        # MISSING: thiếu block networks ở root level
   app_network:
     driver: bridge
