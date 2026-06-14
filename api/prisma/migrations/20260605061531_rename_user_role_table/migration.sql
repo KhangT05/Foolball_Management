@@ -11,7 +11,7 @@ ALTER TABLE `userrole` DROP FOREIGN KEY `UserRole_roleId_fkey`;
 ALTER TABLE `userrole` DROP FOREIGN KEY `UserRole_userId_fkey`;
 
 -- DropTable
-DROP TABLE `userrole`;
+DROP TABLE `UserRole`;
 
 -- CreateTable
 CREATE TABLE `User_Role` (
