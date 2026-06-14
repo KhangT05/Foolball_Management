@@ -1,6 +1,7 @@
 import { PrismaClient } from "../generated/prisma/client.js";
 import { seedRoles } from "./roleSeeder.js";
 import { seedUsers } from "./userSeeder.js";
+import { seedVenues } from "./venueSeeder.js";
 
 export async function runSeeders(db: PrismaClient): Promise<void> {
     console.log("[DataSeeder] starting...\n");
@@ -9,6 +10,6 @@ export async function runSeeders(db: PrismaClient): Promise<void> {
     // roleMap trả về ngay sau seed, tránh query lại
     const roleMap = await seedRoles(db);
     await seedUsers(db, roleMap);
-
+    await seedVenues(db);
     console.log("\n[DataSeeder] done.");
 }
