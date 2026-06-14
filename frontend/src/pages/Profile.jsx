@@ -1,10 +1,74 @@
-import { User, Mail, Shield, Camera, Save, Phone, MapPin } from 'lucide-react';
+import { User, Mail, Shield, Camera, Save, Phone, Loader2 } from 'lucide-react';
 import useAuthStore from '../store/authStore';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { userApi } from '../api/userApi';
 
 export default function Profile() {
-  const { user } = useAuthStore();
+  const { user, setUser } = useAuthStore();
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // Local state for form fields
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+  });
+
+  // Fetch full user details (including phone) when component mounts or user changes
+  useEffect(() => {
+    if (user?.id) {
+      // Initialize with basic auth info
+      setFormData({
+        name: user.name || '',
+        phone: user.phone || '', // Might be undefined initially from /auth/me
+      });
+
+      // Fetch full profile from /users/{id}
+      userApi.getUserById(user.id)
+        .then(res => {
+          if (res.data) {
+            setFormData({
+              name: res.data.name || '',
+              phone: res.data.phone || '',
+            });
+            // Update auth store with full user data
+            setUser(res.data);
+          }
+        })
+        .catch(err => console.error("Failed to fetch full user profile", err));
+    }
+  }, [user?.id, setUser]);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+    if (!user?.id) return;
+    
+    setIsLoading(true);
+    try {
+      const res = await userApi.updateProfile(user.id, {
+        name: formData.name,
+        phone: formData.phone
+      });
+      
+      if (res.data) {
+        // Update successful, sync store
+        setUser({ ...user, ...res.data });
+        setIsEditing(false);
+      }
+    } catch (error) {
+      console.error("Failed to update profile", error);
+      alert(error.response?.data?.message || 'Có lỗi xảy ra khi cập nhật thông tin.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="bg-navy-dark min-h-[calc(100vh-80px)] py-12">
@@ -29,9 +93,9 @@ export default function Profile() {
               <h2 className="text-xl font-bold text-white mb-1">{user?.name || 'Tài Khoản Mới'}</h2>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-neon/10 border border-neon/30 text-neon rounded-full text-xs font-bold uppercase mb-4">
                 <Shield className="w-3 h-3" />
-                <span>Quản lý Đội</span>
+                <span>Thành viên</span>
               </div>
-              <p className="text-gray-400 text-sm">Cập nhật ảnh đại diện để nhận diện dễ dàng hơn trên bảng xếp hạng.</p>
+              <p className="text-gray-400 text-sm">Cập nhật thông tin cá nhân để quản lý giải đấu dễ dàng hơn.</p>
             </div>
           </div>
 
@@ -41,6 +105,7 @@ export default function Profile() {
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-lg font-bold text-white border-b border-navy-light pb-2 inline-block">Hồ sơ chi tiết</h3>
                 <button 
+                  type="button"
                   onClick={() => setIsEditing(!isEditing)}
                   className={`text-sm font-bold px-4 py-2 rounded-lg transition-colors ${isEditing ? 'bg-navy-light text-white' : 'bg-neon/10 text-neon hover:bg-neon hover:text-navy'}`}
                 >
@@ -48,7 +113,7 @@ export default function Profile() {
                 </button>
               </div>
 
-              <form className="space-y-5">
+              <form onSubmit={handleSave} className="space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Họ và tên</label>
@@ -58,7 +123,9 @@ export default function Profile() {
                       </div>
                       <input 
                         type="text" 
-                        defaultValue={user?.name || 'Nguyễn Văn A'} 
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
                         disabled={!isEditing}
                         className="w-full pl-10 pr-4 py-2.5 bg-navy-dark border border-navy-light rounded-lg text-white focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon disabled:opacity-60 disabled:cursor-not-allowed transition-colors" 
                       />
@@ -73,7 +140,7 @@ export default function Profile() {
                       </div>
                       <input 
                         type="email" 
-                        defaultValue={user?.email || 'admin@example.com'} 
+                        value={user?.email || ''} 
                         disabled={true}
                         className="w-full pl-10 pr-4 py-2.5 bg-navy-dark border border-navy-light rounded-lg text-gray-400 opacity-60 cursor-not-allowed transition-colors" 
                       />
@@ -88,48 +155,25 @@ export default function Profile() {
                       </div>
                       <input 
                         type="text" 
-                        defaultValue="0123456789" 
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
                         disabled={!isEditing}
+                        placeholder="Chưa cập nhật"
                         className="w-full pl-10 pr-4 py-2.5 bg-navy-dark border border-navy-light rounded-lg text-white focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon disabled:opacity-60 disabled:cursor-not-allowed transition-colors" 
                       />
                     </div>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Mã số sinh viên</label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <User className="w-4 h-4 text-gray-500" />
-                      </div>
-                      <input 
-                        type="text" 
-                        defaultValue="03062024" 
-                        disabled={!isEditing}
-                        className="w-full pl-10 pr-4 py-2.5 bg-navy-dark border border-navy-light rounded-lg text-white focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon disabled:opacity-60 disabled:cursor-not-allowed transition-colors" 
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Lớp / Chuyên ngành</label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <MapPin className="w-4 h-4 text-gray-500" />
-                    </div>
-                    <input 
-                      type="text" 
-                      defaultValue="Kỹ thuật phần mềm K21" 
-                      disabled={!isEditing}
-                      className="w-full pl-10 pr-4 py-2.5 bg-navy-dark border border-navy-light rounded-lg text-white focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon disabled:opacity-60 disabled:cursor-not-allowed transition-colors" 
-                    />
                   </div>
                 </div>
 
                 {isEditing && (
                   <div className="pt-4 flex justify-end">
-                    <button type="button" className="bg-neon text-navy font-bold px-6 py-2.5 rounded-lg hover:bg-neon-hover flex items-center gap-2 shadow-[0_0_15px_rgba(57,255,20,0.3)] transition-all">
-                      <Save className="w-4 h-4" />
+                    <button 
+                      type="submit" 
+                      disabled={isLoading}
+                      className="bg-neon text-navy font-bold px-6 py-2.5 rounded-lg hover:bg-neon-hover flex items-center gap-2 shadow-[0_0_15px_rgba(57,255,20,0.3)] transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                      {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                       Lưu thay đổi
                     </button>
                   </div>

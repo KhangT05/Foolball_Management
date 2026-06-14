@@ -3,7 +3,7 @@ import Home from "./pages/Home";
 import ScheduleResults from "./pages/ScheduleResults";
 import LeaderboardTeams from "./pages/LeaderboardTeams";
 import MatchDetail from "./pages/MatchDetail";
-import RegisterTeam from "./pages/RegisterTeam";
+import RegisterTeam from "./pages/RegisterTeam";  
 import TeamDetail from "./pages/TeamDetail";
 import Profile from "./pages/Profile";
 import MyTeam from "./pages/MyTeam";
@@ -18,6 +18,18 @@ import Register from "./pages/Register";
 import PublicLayout from "./layouts/PublicLayout";
 
 function App() {
+  // const initializeAuth = useAuthStore((state) => state.initializeAuth);
+
+  // useEffect(() => {
+  //   /**
+  //    * Khôi phục session khi user F5 hoặc mở tab mới
+  //    * - access token (in-memory) bị mất khi reload → cần refresh
+  //    * - httpOnly cookie refresh_token vẫn còn → gọi /auth/refresh để lấy token mới
+  //    * - Nếu không có csrf_token trong localStorage → bỏ qua (chưa login)
+  //    */
+  //   initializeAuth();
+  // }, []); // Chỉ chạy 1 lần khi app mount
+
   return (
     <Router>
       <Routes>
